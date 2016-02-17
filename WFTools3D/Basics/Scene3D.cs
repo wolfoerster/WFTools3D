@@ -42,15 +42,15 @@ namespace WFTools3D
 			Focusable = true;
 			IsInteractive = true;
 			Background = Brushes.Black;
+
 			Child = Viewport = new Viewport3D();
+			Viewport.Children.Add(Models = new Object3D());
+			Viewport.Children.Add(Lighting = new Lighting());
 
 			AddCamera(-5, -4, 6);
 			AddCamera(+5, -4, 6);
 			AddCamera(10, 10, 9);
 			ActivateCamera(0);
-
-			Viewport.Children.Add(Models = new Object3D());
-			Viewport.Children.Add(Lighting = new Lighting());
 
 			//--- timer is required for flight simulation
 			timer = new DispatcherTimer(DispatcherPriority.Render);

@@ -61,7 +61,7 @@ namespace WFTools3DDemo
 			Brush brush1 = GetBrush("Facade");
 			Brush brush2 = GetBrush("Image");
 
-			for (int i = 0; i < 150; i++)
+			for (int i = 0; i < 170; i++)
 			{
 				double x = 58 * (2 * randy.NextDouble() - 1);
 				double y = 38 * (2 * randy.NextDouble() - 1);
@@ -71,8 +71,9 @@ namespace WFTools3DDemo
 			}
 
 			RunningMan man = new RunningMan(60, 40);
-			scene.TimerTicked += man.TimerTick;
 			scene.Models.Children.Add(man);
+			scene.TimerTicked += man.TimerTick;
+			scene.TimerTicked += TimerTick;
 
 			scene.ToggleHelperModels();
 			FocusManager.SetFocusedElement(this, scene);
@@ -84,12 +85,12 @@ namespace WFTools3DDemo
 			Primitive3D obj = null;
 			double angle1 = 180 * randy.NextDouble();
 			double angle2 = 180 * (1 + randy.NextDouble());
-			int index = ++count % 10;
+			int index = count > 150 ? 2 : ++count % 10;
 			switch (index)
 			{
 				case 0: //--- more cubes, please :-)
 				case 1: obj = new Cube(); break;
-				case 2: obj = new Sphere(); break;
+				case 2: obj = new Balloon(z); break;
 				case 3: obj = new Cone { IsClosed = true }; break;
 				case 4: obj = new Cylinder { IsClosed = true }; break;
 				case 5: obj = new Cylinder { StartDegrees = angle1, StopDegrees = angle2, IsClosed = true }; break;
@@ -114,13 +115,53 @@ namespace WFTools3DDemo
 				obj.DiffuseMaterial.Brush = brush1;
 				obj.Position = new Point3D(x, y, z + 0.01);//--- avoid z fighting with the ground
 			}
-			else if (index == 4 || index == 5)
+			else if (index == 2)//--- balloon
+			{
+				obj.ScaleZ = obj.ScaleX * 1.2;
+			}
+			else if (index == 4 || index == 5)//--- cylinder
 			{
 				obj.DiffuseMaterial.Brush = brush2;
+				obj.Rotation1 = new Quaternion(Math3D.UnitZ, angle1);
 			}
 			return obj;
 		}
 		int count;
+
+		class Balloon : Sphere
+		{
+			public Balloon(double z)
+			{
+				DeltaZ = z * 0.01;
+			}
+			public double DeltaZ;
+		}
+
+		void TimerTick(object sender, EventArgs e)
+		{
+			foreach (var item in scene.Models.Children)
+			{
+				Balloon balloon = item as Balloon;
+				if (balloon != null)
+				{
+					Point3D pos = balloon.Position;
+					if ((pos.Z > 10 && balloon.DeltaZ > 0)
+						|| (pos.Z < balloon.ScaleZ && balloon.DeltaZ < 0))
+						balloon.DeltaZ *= -1;
+					pos.Z += balloon.DeltaZ;
+					balloon.Position = pos;
+				}
+				else
+				{
+					Cylinder cylinder = item as Cylinder;
+					if (cylinder != null)
+					{
+						Quaternion q = cylinder.Rotation1;
+						cylinder.Rotation1 = new Quaternion(Math3D.UnitZ, q.Angle + 0.3);
+					}
+				}
+			}
+		}
 
 		Brush GetRandomBrush()
 		{
