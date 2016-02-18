@@ -1,6 +1,16 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
+# These files are binary and should be left untouched
+# (binary is a macro for -text -diff)
+*.dll           binary
+*.gif           binary
+*.ico           binary
+*.cur           binary
+*.jpg           binary
+*.jpeg          binary
+*.png           binary
+
 # Custom for Visual Studio
 *.cs     diff=csharp
 

@@ -232,7 +232,15 @@ namespace WFTools3D
 		/// </summary>
 		public void LookAtOrigin()
 		{
-			Math3D.LookAtOrigin(Position, ref targetLook, ref targetUp);
+			LookAt(Math3D.Origin);
+		}
+
+		/// <summary>
+		/// Turns the camera to a target point and changes the up direction accordingly.
+		/// </summary>
+		public void LookAt(Point3D targetPoint)
+		{
+			Math3D.LookAt(targetPoint, Position, ref targetLook, ref targetUp);
 			if (Speed == 0)
 			{
 				UpDirection = targetUp;

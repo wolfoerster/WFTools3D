@@ -830,26 +830,26 @@ namespace WFTools3D
 		}
 
 		/// <summary>
-		/// Calculates the look direction and up direction for an observer looking at the origin.
+		/// Calculates the look direction and up direction for an observer looking at a target point.
 		/// </summary>
-		public static void LookAtOrigin(Point3D observerPosition, ref Vector3D lookDirection, ref Vector3D upDirection)
+		public static void LookAt(Point3D targetPoint, Point3D observerPosition, ref Vector3D lookDirection, ref Vector3D upDirection)
 		{
-			lookDirection = Origin - observerPosition;
+			lookDirection = targetPoint - observerPosition;
 			lookDirection.Normalize();
 
 			double a = lookDirection.X;
 			double b = lookDirection.Y;
 			double c = lookDirection.Z;
 
-			//--- Find the one and only up vector (x, y, z) which has a positive z value, 
-			//--- which is perpendicular to the look vector and and which ensures that 
-			//--- the resulting roll angle is 0, i.e. the resulting left vector (= look x up)
-			//--- lies within the xy-plane (or has a z value of 0). In other words: 
-			//--- 1. ax + by + cz = 0
-			//--- 2. ay - bx = 0
-			//--- 3. z = 1 (something positive)
-			//--- If the current position is a point on the z axis, i.e. a = b = 0 and c != 0, 
-			//--- the up vector is simply (1, 0, 0) for c > 0 and (-1, 0, 0) for c < 0.
+			//--- Find the one and only up vector (x, y, z) which has a positive z value (1), 
+			//--- which is perpendicular to the look vector (2) and and which ensures that 
+			//--- the resulting roll angle is 0, i.e. the resulting left vector (= up cross look)
+			//--- lies within the xy-plane (or has a z value of 0) (3). In other words: 
+			//--- 1. z > 0 (e.g. 1)
+			//--- 2. ax + by + cz = 0
+			//--- 3. ay - bx = 0
+			//--- If the observer position is right above or below the target point, i.e. a = b = 0 and c != 0, 
+			//--- we set the up vector to (1, 0, 0) for c > 0 and to (-1, 0, 0) for c < 0.
 
 			double length = (a * a + b * b);
 			if (length > 1e-12)
@@ -865,7 +865,7 @@ namespace WFTools3D
 					upDirection = -UnitX;
 			}
 		}
-    }
+	}
 
 	/// <summary>
 	/// A transformation for 3D points.
