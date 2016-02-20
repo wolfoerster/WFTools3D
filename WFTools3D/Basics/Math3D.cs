@@ -747,62 +747,29 @@ namespace WFTools3D
 		/// <summary>
 		/// Rotates the specified point about the specified axis by the specified angle.
 		/// </summary>
-		[Obsolete]
 		static public Point3D Rotate(Point3D pt, Point3D ptAxis1, Point3D ptAxis2, double angle, bool isAngleInDegrees = true)
 		{
 			Vector3D axis = ptAxis2 - ptAxis1;
-			axis.Normalize();
-
-			Point3D ptr = new Point3D();
-			Vector3D pts = pt - ptAxis1;
-#if The_Old_Way
-			if (isAngleInDegrees)
-				angle = MathUtils.ToRadians(angle);
-
-			//---------------------------------------------------------------------------------
-			// Berechne neue Koordinaten ueber die Richtungskosinus a(lpha), b(eta) und g(amma)
-			//---------------------------------------------------------------------------------
-			double a = axis.X;
-			double b = axis.Y;
-			double g = axis.Z;
-
-			double cos = Math.Cos(angle);
-			double sin = Math.Sin(angle);
-			double oneMinusCos = 1.0 - cos;
-
-			double a2 = a * a;
-			double b2 = b * b;
-			double g2 = g * g;
-
-			ptr.X = pts.X * (cos + a2 * oneMinusCos)
-				+ pts.Y * (g * sin + a * b * oneMinusCos)
-				+ pts.Z * (-b * sin + a * g * oneMinusCos);
-
-			ptr.Y = pts.X * (-g * sin + b * a * oneMinusCos)
-				+ pts.Y * (cos + b2 * oneMinusCos)
-				+ pts.Z * (a * sin + b * g * oneMinusCos);
-
-			ptr.Z = pts.X * (b * sin + g * a * oneMinusCos)
-				+ pts.Y * (-a * sin + g * b * oneMinusCos)
-				+ pts.Z * (cos + g2 * oneMinusCos);
-#else
-			Quaternion q = Rotation(axis, -angle, isAngleInDegrees);
-			ptr = (Point3D)q.Transform(pts);
-#endif
-			return ptr + (Vector3D)ptAxis1;
+			Quaternion q = Rotation(axis, angle, isAngleInDegrees);
+			return (Point3D)q.Transform(pt - ptAxis1) + (Vector3D)ptAxis1;
 		}
 
 		/// <summary>
-		/// Calculates a rotation quaternion. Parameter rotationAxis must be a unit vector.
+		/// Calculates a rotation quaternion. Rotation axis does not have to be a unit vector.
 		/// </summary>
 		public static Quaternion Rotation(Vector3D rotationAxis, double angle, bool isAngleInDegrees = true)
 		{
-			if (isAngleInDegrees)
-				angle = MathUtils.ToRadians(angle);
+			if (!isAngleInDegrees)
+				angle = MathUtils.ToDegrees(angle);
 
-			double phi = angle * 0.5;
-			double sin = Math.Sin(phi);
-			return new Quaternion(rotationAxis.X * sin, rotationAxis.Y * sin, rotationAxis.Z * sin, Math.Cos(phi));
+			//--- Angle should be within 0 and 360. Otherwise the following happens: if angle is -1 and axis is (0,0,1) 
+			//--- the returned Quaternion will have an axis of (0,0,-1) and an angle of +1, which for sure leads to the 
+			//--- same rotation, but is troublesome when reusing the quaternion in animation calculations.
+			angle %= 360;
+			if (angle < 0) angle += 360;
+			if (angle > 360) angle -= 360;
+
+			return new Quaternion(rotationAxis, angle);
 		}
 
 		/// <summary>
