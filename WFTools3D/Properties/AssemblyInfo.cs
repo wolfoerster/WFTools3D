@@ -10,7 +10,7 @@ using System.Windows.Markup;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Wolfgang Foerster")]
 [assembly: AssemblyProduct("WFTools3D")]
-[assembly: AssemblyCopyright("Copyright © 2016")]
+[assembly: AssemblyCopyright("Copyright © 2016 Wolfgang Foerster (wolfoerster@gmx.de)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: XmlnsDefinition("WFTools3D", "WFTools3D")]

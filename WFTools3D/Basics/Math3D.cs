@@ -143,6 +143,16 @@ namespace WFTools3D
 		}
 
 		/// <summary>
+		/// Gets the unit direction vector from this point to a target point.
+		/// </summary>
+		public static Vector3D DirectionTo(this Point3D thisPoint, Point3D targetPoint)
+		{
+			Vector3D v = targetPoint - thisPoint;
+			v.Normalize();
+			return v;
+		}
+
+		/// <summary>
 		/// Gets the aspect ratio.
 		/// </summary>
         public static double GetAspectRatio(Size size)
@@ -733,7 +743,7 @@ namespace WFTools3D
         public static readonly Vector3D UnitZ = new Vector3D(0, 0, 1);
 
 		/// <summary>
-		/// Performs a linear interpolation.
+		/// Linear interpolation of 3D vectors.
 		/// </summary>
 		public static Vector3D Lerp(Vector3D from, Vector3D to, double t)
 		{
@@ -742,6 +752,16 @@ namespace WFTools3D
 			v.Y = from.Y * (1 - t) + to.Y * t;
 			v.Z = from.Z * (1 - t) + to.Z * t;
 			return v;
+		}
+
+		/// <summary>
+		/// Linear interpolation of quaternions.
+		/// </summary>
+		public static Quaternion Lerp(Quaternion from, Quaternion to, double t)
+		{
+			double angle = from.Angle * (1 - t) + to.Angle * t;
+			Vector3D axis = Lerp(from.Axis, to.Axis, t);
+			return new Quaternion(axis, angle);
 		}
 
 		/// <summary>

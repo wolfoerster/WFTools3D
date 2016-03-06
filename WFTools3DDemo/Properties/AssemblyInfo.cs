@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Wolfgang Foerster")]
 [assembly: AssemblyProduct("WFTools3DDemo")]
-[assembly: AssemblyCopyright("Copyright © 2016")]
+[assembly: AssemblyCopyright("Copyright © 2016 Wolfgang Foerster (wolfoerster@gmx.de)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
