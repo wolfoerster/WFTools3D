@@ -161,7 +161,17 @@ namespace WFTools3DDemo
 					}
 				}
 			}
+
+			string msg = checker.GetResult();
+			DateTime t1 = DateTime.Now;
+			if ((t1 - t0).TotalSeconds > 1)
+			{
+				t0 = t1;
+				Title = string.Format("WFTools3D Demo ({0})", msg);
+			}
 		}
+		DateTime t0;
+		PerformanceChecker checker = new PerformanceChecker();
 
 		Brush GetRandomBrush()
 		{

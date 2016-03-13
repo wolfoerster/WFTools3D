@@ -22,3 +22,5 @@ Class Scene3D also has 3 built-in cameras which again can be rotated and transla
 very easily. A highlight for sure is the Speed property of the cameras which makes 
 them fly in their look direction. Using the mouse you can now change yaw, pitch and 
 roll angles just like in a flight simulator.
+
+<img src="https://googledrive.com/host/0B_1ZC4l0k6bJMkVCdmVBLTlSbGM/WFTools3DDemo.jpg" style="width:880px;">

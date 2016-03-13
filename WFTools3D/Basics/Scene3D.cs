@@ -122,11 +122,11 @@ namespace WFTools3D
 			if (!IsInteractive)
 				return;
 
-			if (Helpers.IsCtrlDown())
+			if (WFUtils.IsCtrlDown())
 			{
 				touchPoint = GetTouchPoint(e.GetPosition(this));
 
-				if (adi != null && Helpers.IsAltDown())
+				if (adi != null && WFUtils.IsAltDown())
 				{
 					adi.TargetPoint = touchPoint;
 					adi.Update(Camera);
@@ -170,11 +170,11 @@ namespace WFTools3D
 
 			//--- assume we are handling the key
 			e.Handled = true;
-			double amount = Helpers.IsShiftDown() ? 1 : 0.2;
+			double amount = WFUtils.IsShiftDown() ? 1 : 0.2;
 
-			if (Helpers.IsCtrlDown())
+			if (WFUtils.IsCtrlDown())
 			{
-				amount *= Helpers.IsAltDown() ? 0.1 : 0.5;
+				amount *= WFUtils.IsAltDown() ? 0.1 : 0.5;
 				amount *= Camera.Scale;
 				switch (e.Key)
 				{
@@ -328,7 +328,7 @@ namespace WFTools3D
 		/// </summary>
 		protected void HandleMouseMove(Vector mouseMove)
 		{
-			double factor = Helpers.IsShiftDown() ? 0.5 : 0.1;
+			double factor = WFUtils.IsShiftDown() ? 0.5 : 0.1;
 			double angleX = mouseMove.X * factor;
 			double angleY = mouseMove.Y * factor;
 
@@ -421,7 +421,7 @@ namespace WFTools3D
 		/// </summary>
 		void TimerTick(object sender, EventArgs e)
 		{
-			Camera.MovingDirectionIsLocked = Helpers.IsCtrlDown() || Console.CapsLock;
+			Camera.MovingDirectionIsLocked = WFUtils.IsCtrlDown() || Console.CapsLock;
 
 			foreach (var camera in Cameras)
 				camera.Update();
