@@ -56,10 +56,10 @@ namespace WFTools3DDemo
 			square.Transform.Freeze();
 			square.DiffuseMaterial.Brush = brush;
 			square.BackMaterial = square.Material;
-			scene.Models.Children.Add(square);
+			scene.Models.Add(square);
 
 			Brush brush1 = GetBrush("Facade");
-			Brush brush2 = GetBrush("Image");
+			Brush brush2 = GetBrush("Poster");
 
 			for (int i = 0; i < 170; i++)
 			{
@@ -67,11 +67,11 @@ namespace WFTools3DDemo
 				double y = 38 * (2 * randy.NextDouble() - 1);
 				double z = 3 * randy.NextDouble() + 1;
 				Object3D obj = RandomPrimitive(x, y, z, brush1, brush2);
-				scene.Models.Children.Add(obj);
+				scene.Models.Add(obj);
 			}
 
 			RunningMan man = new RunningMan(60, 40);
-			scene.Models.Children.Add(man);
+			scene.Models.Add(man);
 			scene.TimerTicked += man.TimerTick;
 			scene.TimerTicked += TimerTick;
 
@@ -139,7 +139,7 @@ namespace WFTools3DDemo
 
 		void TimerTick(object sender, EventArgs e)
 		{
-			foreach (var item in scene.Models.Children)
+			foreach (var item in scene.Models)
 			{
 				Balloon balloon = item as Balloon;
 				if (balloon != null)

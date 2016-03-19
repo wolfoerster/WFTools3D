@@ -43,9 +43,13 @@ namespace WFTools3D
 			IsInteractive = true;
 			Background = Brushes.Black;
 
+			ModelsContainer = new Object3D();
+			Models = ModelsContainer.Children;
+			Lighting = new Lighting();
+
 			Child = Viewport = new Viewport3D();
-			Viewport.Children.Add(Models = new Object3D());
-			Viewport.Children.Add(Lighting = new Lighting());
+			Viewport.Children.Add(ModelsContainer);
+			Viewport.Children.Add(Lighting);
 
 			AddCamera(-5, -4, 6);
 			AddCamera(+5, -4, 6);
@@ -75,9 +79,22 @@ namespace WFTools3D
 		}
 
 		/// <summary>
+		/// Gets the active camera index.
+		/// </summary>
+		public int CameraIndex
+		{
+			get { return ccIndex; }
+		}
+
+		/// <summary>
 		/// Gets or sets the 3D models container.
 		/// </summary>
-		public Object3D Models { get; protected set; }
+		public Object3D ModelsContainer { get; protected set; }
+
+		/// <summary>
+		/// Gets the 3D models collection.
+		/// </summary>
+		public Visual3DCollection Models { get; protected set; }
 
 		/// <summary>
 		/// Gets or sets the lighting.
@@ -110,6 +127,11 @@ namespace WFTools3D
 			get { return CacheMode != null; }
 			set { CacheMode = value ? new BitmapCache() : null; }
 		}
+
+		/// <summary>
+		/// Occurs when the internal timer has ticked.
+		/// </summary>
+		public event EventHandler TimerTicked;
 
 		#endregion Properties
 
@@ -234,15 +256,15 @@ namespace WFTools3D
 			if (airplanes == null)
 			{
 				airplanes = new Airplane[2];
-				Models.Children.Add(airplanes[0] = new Airplane());
-				Models.Children.Add(airplanes[1] = new Airplane());
+				Models.Add(airplanes[0] = new Airplane());
+				Models.Add(airplanes[1] = new Airplane());
 			}
 			else
 			{
 				if (adi == null)
 				{
 					adi = new ADI();
-					Models.Children.Add(adi);
+					Models.Add(adi);
 				}
 				else
 				{
@@ -261,17 +283,20 @@ namespace WFTools3D
 		{
 			if (adi != null)
 			{
-				Models.Children.Remove(adi);
+				Models.Remove(adi);
 				adi = null;
 			}
 			if (airplanes != null)
 			{
-				Models.Children.Remove(airplanes[0]);
-				Models.Children.Remove(airplanes[1]);
+				Models.Remove(airplanes[0]);
+				Models.Remove(airplanes[1]);
 				airplanes = null;
 			}
 		}
 
+		/// <summary>
+		/// Activates a camera. Valid indices are 0, 1 and 2.
+		/// </summary>
 		public bool ActivateCamera(int index)
 		{
 			if (!MathUtils.IsValidIndex(index, Cameras.Count))
@@ -283,6 +308,27 @@ namespace WFTools3D
 
 			UpdateHelperModels();
 			return true;
+		}
+
+		/// <summary>
+		/// Starts the internal timer.
+		/// </summary>
+		public void StartTimer()
+		{
+			manualStart = true;
+			IsCached = false;
+			timer.Start();
+		}
+		bool manualStart;
+
+		/// <summary>
+		/// Stops the internal timer.
+		/// </summary>
+		public void StopTimer()
+		{
+			manualStart = false;
+			IsCached = true;
+			timer.Stop();
 		}
 
 		#endregion Public Methods
@@ -375,15 +421,18 @@ namespace WFTools3D
 		{
 			if (e.PropertyName == "Speed")
 			{
-				if (Cameras.FirstOrDefault(cam => cam.Speed != 0) == null)
+				if (!manualStart)
 				{
-					timer.Stop();
-					IsCached = true;
-				}
-				else if (!timer.IsEnabled)
-				{
-					IsCached = false;
-					timer.Start();
+					if (Cameras.FirstOrDefault(cam => cam.Speed != 0) == null)
+					{
+						timer.Stop();
+						IsCached = true;
+					}
+					else if (!timer.IsEnabled)
+					{
+						IsCached = false;
+						timer.Start();
+					}
 				}
 			}
 		}
@@ -431,8 +480,6 @@ namespace WFTools3D
 			if (TimerTicked != null)
 				TimerTicked(sender, e);
 		}
-
-		public event EventHandler TimerTicked;
 
 		#endregion Private Stuff
 

@@ -92,13 +92,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Facade.jpg" />
+    <Resource Include="Images\Facade.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Ground.jpg" />
+    <Resource Include="Images\Ground.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image.jpg" />
+    <Resource Include="Images\Poster.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
