@@ -240,7 +240,7 @@ namespace WFTools3D
 		/// </summary>
 		public void LookAt(Point3D targetPoint)
 		{
-			Math3D.LookAt(targetPoint, Position, ref targetLook, ref targetUp);
+			Math3D.LookAt(targetPoint, Position, out targetLook, out targetUp);
 			if (Speed == 0)
 			{
 				UpDirection = targetUp;

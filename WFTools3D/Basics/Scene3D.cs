@@ -313,8 +313,12 @@ namespace WFTools3D
 		/// <summary>
 		/// Starts the internal timer.
 		/// </summary>
-		public void StartTimer()
+		public void StartTimer(int ms = 30)
 		{
+			if (timer.IsEnabled)
+				return;
+
+			timer.Interval = TimeSpan.FromMilliseconds(ms);
 			manualStart = true;
 			IsCached = false;
 			timer.Start();
@@ -326,9 +330,20 @@ namespace WFTools3D
 		/// </summary>
 		public void StopTimer()
 		{
+			if (!timer.IsEnabled)
+				return;
+
 			manualStart = false;
 			IsCached = true;
 			timer.Stop();
+		}
+
+		/// <summary>
+		/// Returns true if the internal timer is busy.
+		/// </summary>
+		public bool IsTimerBusy
+		{
+			get { return timer.IsEnabled; }
 		}
 
 		#endregion Public Methods

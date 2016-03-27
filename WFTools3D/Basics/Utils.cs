@@ -24,6 +24,10 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Controls.Primitives;
 
+#if WFToolsAvailable
+using WFTools;
+#endif
+
 namespace WFTools3D
 {
 	public class TextureTransform

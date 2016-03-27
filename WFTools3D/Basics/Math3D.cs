@@ -819,7 +819,7 @@ namespace WFTools3D
 		/// <summary>
 		/// Calculates the look direction and up direction for an observer looking at a target point.
 		/// </summary>
-		public static void LookAt(Point3D targetPoint, Point3D observerPosition, ref Vector3D lookDirection, ref Vector3D upDirection)
+		public static void LookAt(Point3D targetPoint, Point3D observerPosition, out Vector3D lookDirection, out Vector3D upDirection)
 		{
 			lookDirection = targetPoint - observerPosition;
 			lookDirection.Normalize();
