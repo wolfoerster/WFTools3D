@@ -57,6 +57,7 @@
     <Compile Include="Basics\MeshUtils.cs" />
     <Compile Include="Basics\Object3D.cs" />
     <Compile Include="Primitives\Primitive3D.cs" />
+    <Compile Include="Primitives\Tube.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Basics\Scene3D.cs" />
   </ItemGroup>

@@ -19,6 +19,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Collections.Generic;
 using System.Windows.Controls;
 using WFTools3D;
 
@@ -69,6 +70,19 @@ namespace WFTools3DDemo
 				Object3D obj = RandomPrimitive(x, y, z, brush1, brush2);
 				scene.Models.Add(obj);
 			}
+
+			Tube tube = new Tube(12) { Radius = 0.1, IsPathClosed = true };
+			int n = 180;
+			List<Point3D> path = new List<Point3D>(n);
+			for (int i = 0; i < n; i++)
+			{
+				double t = MathUtils.PIx2 * i / n;
+				path.Add(new Point3D(Math.Cos(t), Math.Sin(t), Math.Cos(6 * t) / 3));
+			}
+			tube.Path = path;
+			tube.DiffuseMaterial.Brush = Brushes.Green;
+			tube.Position = new Point3D(-2, 2, 1);
+			scene.Models.Add(tube);
 
 			RunningMan man = new RunningMan(60, 40);
 			scene.Models.Add(man);
@@ -153,11 +167,11 @@ namespace WFTools3DDemo
 				}
 				else
 				{
-					Cylinder cylinder = item as Cylinder;
-					if (cylinder != null)
+					if (item is Cylinder || item is Tube)
 					{
-						Quaternion q = cylinder.Rotation1;
-						cylinder.Rotation1 = new Quaternion(Math3D.UnitZ, q.Angle + 0.3);
+						Object3D obj = item as Object3D;
+						Quaternion q = obj.Rotation1;
+						obj.Rotation1 = new Quaternion(Math3D.UnitZ, q.Angle + 0.3);
 					}
 				}
 			}

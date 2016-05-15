@@ -16,6 +16,7 @@
 //******************************************************************************************
 using System;
 using System.Windows;
+using System.Collections.Generic;
 using System.Windows.Media.Media3D;
 
 #if WFToolsAvailable
@@ -468,6 +469,123 @@ namespace WFTools3D
 				id = 2 * divisions - id;
 
 			return N * id + 1;
+		}
+
+		/// <summary>
+		/// Mesh for a tube with a given cross section along a given path.
+		/// </summary>
+		static public MeshGeometry3D CreateTube(IList<Point3D> path, IList<Point> section, bool isPathClosed)
+		{
+			//--- based on MeshBuilder.AddTube() from https://github.com/helix-toolkit
+			int pathCount = path.Count;
+			int sectionCount = section.Count;
+			if (pathCount < 2 || sectionCount < 2)
+				return null;
+
+			MeshGeometry3D mesh = new MeshGeometry3D();
+
+			//--- find first segment direction (look direction)
+			int next, prev = isPathClosed ? pathCount - 1 : 0;
+			Vector3D look = path[1] - path[prev];
+			look.Normalize();
+
+			//--- find vector v which is perpendicular to the first segment direction
+			Vector3D u = Math3D.UnitX;
+			Vector3D v = look.Cross(u);
+			if (v.LengthSquared < 1e-3)
+			{
+				u = Math3D.UnitY;
+				v = look.Cross(u);
+			}
+
+			//--- calculate positions, normals and texture coordinates
+			for (int i = 0; i < pathCount; i++)
+			{
+				//--- calculate new look direction from previous and next point in path
+				prev = i > 0 ? i - 1 : isPathClosed ? pathCount - 1 : i;
+				next = i + 1 < pathCount ? i + 1 : isPathClosed ? 0 : i;
+				look = path[next] - path[prev];
+
+				//--- find vector u which is perpendicular to v and new look (note that v already is perpendicular to old look)
+				u = v.Cross(look);
+				u.Normalize();
+
+				//--- recalc v
+				v = look.Cross(u);
+				v.Normalize();
+
+				for (int j = 0; j < sectionCount; j++)
+				{
+					Vector3D n = section[j].X * u + section[j].Y * v;
+					Point3D pt = path[i] + n;
+					mesh.Positions.Add(pt);
+
+					n.Normalize();
+					mesh.Normals.Add(n);
+
+					double tx = i / (pathCount - 1.0);
+					double ty = j / (sectionCount - 1.0);
+					mesh.TextureCoordinates.Add(new Point(tx, ty));
+				}
+			}
+
+			//--- set triangle indices
+			int maxPathIndex = isPathClosed ? pathCount : pathCount - 1;
+			int maxSectionIndex = sectionCount - 1;
+
+			for (int i = 0; i < maxPathIndex; i++)
+			{
+				for (int j = 0; j < maxSectionIndex; j++)
+				{
+					int i00 = i * sectionCount + j;
+					int i01 = i00 + 1;
+					int i10 = ((i + 1) % pathCount) * sectionCount + j;
+					int i11 = i10 + 1;
+					AddTriangleIndices(mesh, i00, i01, i11);
+					AddTriangleIndices(mesh, i11, i10, i00);
+				}
+			}
+
+			//--- add end caps?
+			if (!isPathClosed)
+			{
+				int i = mesh.Positions.Count - sectionCount;
+				AddTubeEndCap(mesh, 0, path, section, true);
+				AddTubeEndCap(mesh, i, path, section, false);
+			}
+
+			return mesh;
+		}
+
+		static void AddTubeEndCap(MeshGeometry3D mesh, int copyFrom, IList<Point3D> path, IList<Point> section, bool isBegin)
+		{
+			int from = isBegin ? 1 : path.Count - 2;
+			int to = isBegin ? 0 : path.Count - 1;
+			int t = isBegin ? 0 : 1;
+
+			Vector3D n = path[to] - path[from];
+			n.Normalize();
+
+			int ci = mesh.Positions.Count;
+			mesh.Positions.Add(path[to]);
+			mesh.Normals.Add(n);
+			mesh.TextureCoordinates.Add(new Point(t, t));
+
+			for (int i = 0; i < section.Count; i++)
+			{
+				mesh.Positions.Add(mesh.Positions[copyFrom + i]);
+				mesh.Normals.Add(n);
+				mesh.TextureCoordinates.Add(new Point(t, t));
+
+				if (i > 0)
+				{
+					int j = mesh.Positions.Count;
+					if (isBegin)
+						AddTriangleIndices(mesh, ci, j - 1, j - 2);
+					else
+						AddTriangleIndices(mesh, ci, j - 2, j - 1);
+				}
+			}
 		}
 	}
 }
