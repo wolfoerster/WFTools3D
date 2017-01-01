@@ -23,4 +23,4 @@ very easily. A highlight for sure is the Speed property of the cameras which mak
 them fly in their look direction. Using the mouse you can now change yaw, pitch and 
 roll angles just like in a flight simulator.
 
-<img src="https://googledrive.com/host/0B_1ZC4l0k6bJMkVCdmVBLTlSbGM/WFTools3DDemo.jpg" style="width:880px;">
+<img src="https://s24.postimg.org/djyvyilhx/WFTools3_DDemo.jpg" style="width:880px;">
