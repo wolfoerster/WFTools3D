@@ -7,6 +7,7 @@
     <ImageBrush x:Key="Facade" ImageSource="Images\Facade.jpg"/>
     <ImageBrush x:Key="Ground" ImageSource="Images\Ground.jpg"/>
     <ImageBrush x:Key="Poster" ImageSource="Images\Poster.jpg"/>
+    <ImageBrush x:Key="Sky" ImageSource="Images\Sky.jpg"/>
   </Window.Resources>
   <Grid>
     <wft3d:Scene3D x:Name="scene"/>

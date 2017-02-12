@@ -51,6 +51,19 @@ namespace WFTools3DDemo
 
 		void InitializeScene(Brush brush)
 		{
+			Sphere skyBox = new Sphere(32) { Radius = 90 };
+			skyBox.Rotation1 = Math3D.RotationZ(90);
+			skyBox.Transform.Freeze();
+
+			ImageBrush skyBrush = GetBrush("Sky", false);
+			skyBrush.Viewport = new Rect(0, 0, 1, 0.5);
+			skyBrush.Freeze();
+
+			skyBox.Material = null;
+			skyBox.BackMaterial = new MaterialGroup();
+			skyBox.BackMaterial.Children.Add(new DiffuseMaterial(skyBrush));
+			scene.Models.Add(skyBox);
+
 			Square square = new Square(100);
 			square.ScaleX = 60;
 			square.ScaleY = 40;
