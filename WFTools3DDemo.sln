@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WFTools3DDemo", "WFTools3DDemo\WFTools3DDemo.csproj", "{51FF577B-862D-455C-9F5B-775ED61CE02F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WFTools3D", "WFTools3D\WFTools3D.csproj", "{4F58D960-50F3-434F-B2B0-C9ED67151485}"
@@ -22,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5403BDDC-FB39-456A-89EE-FE269FC84917}
 	EndGlobalSection
 EndGlobal
