@@ -818,8 +818,13 @@ namespace WFTools3D
 
 		/// <summary>
 		/// Calculates the look direction and up direction for an observer looking at a target point.
+		/// The look direction is simply the normalized difference between target point and observer position.
+		/// From the infinite number of possible up directions the one with maximum z coordinate is returned.
+		/// If all possible up directions have a z coordinate of 0, i.e. the observer position is right above 
+		/// or below the target point, the up direction is set to UnitY if looking down or -UnitY if looking up.
+		/// In this case the return value is false, in the first case it is true.
 		/// </summary>
-		public static void LookAt(Point3D targetPoint, Point3D observerPosition, out Vector3D lookDirection, out Vector3D upDirection)
+		public static bool LookAt(Point3D targetPoint, Point3D observerPosition, out Vector3D lookDirection, out Vector3D upDirection)
 		{
 			lookDirection = targetPoint - observerPosition;
 			lookDirection.Normalize();
@@ -843,13 +848,12 @@ namespace WFTools3D
 			{
 				upDirection = new Vector3D(-c * a / length, -c * b / length, 1);
 				upDirection.Normalize();
+				return true;
 			}
 			else
 			{
-				if (c > 0)
-					upDirection = UnitX;
-				else
-					upDirection = -UnitX;
+				upDirection = c < 0 ? UnitY : -UnitY;
+				return false;
 			}
 		}
 	}

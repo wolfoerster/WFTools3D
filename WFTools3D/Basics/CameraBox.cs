@@ -240,7 +240,18 @@ namespace WFTools3D
 		/// </summary>
 		public void LookAt(Point3D targetPoint)
 		{
-			Math3D.LookAt(targetPoint, Position, out targetLook, out targetUp);
+			if (Math3D.LookAt(targetPoint, Position, out targetLook, out Vector3D tempUp))
+			{
+				targetUp = tempUp;
+			}
+			else
+			{
+				if (targetUp.Length < 1e-12)
+				{
+					targetUp = tempUp;
+				}
+			}
+
 			if (Speed == 0)
 			{
 				UpDirection = targetUp;
