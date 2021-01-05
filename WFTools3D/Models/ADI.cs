@@ -21,39 +21,39 @@ using System.Windows.Media.Media3D;
 
 namespace WFTools3D
 {
-	/// <summary>
-	/// Something like an attitude director indicator for flight simulators.
-	/// </summary>
-	public class ADI : Object3D
-	{
-		/// <summary>
-		/// ctor
-		/// </summary>
-		public ADI()
-		{
-			Children.Add(horizon);
-			Children.Add(targetIndicator);
-		}
-		Bone horizon = new Bone(0.0002, 2, Brushes.Azure, Brushes.DarkBlue, Brushes.DarkBlue);
-		Bone targetIndicator = new Bone(0.0002, 2.5, Brushes.Azure, Brushes.Green, Brushes.Red);
+    /// <summary>
+    /// Something like an attitude director indicator for flight simulators.
+    /// </summary>
+    public class ADI : Object3D
+    {
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public ADI()
+        {
+            Children.Add(horizon);
+            Children.Add(targetIndicator);
+        }
+        Bone horizon = new Bone(0.0002, 2, Brushes.Azure, Brushes.DarkBlue, Brushes.DarkBlue);
+        Bone targetIndicator = new Bone(0.0002, 2.5, Brushes.Azure, Brushes.Green, Brushes.Red);
 
-		public Point3D TargetPoint = Math3D.Origin;
+        public Point3D TargetPoint = Math3D.Origin;
 
-		/// <summary>
-		/// Visualize roll angle and direction to origin (or height above ground).
-		/// </summary>
-		public void Update(CameraBox Camera)
-		{
-			Vector3D leftDirection = Camera.LeftDirection.Rotate(Camera.LookDirection, -Camera.RollAngle);
+        /// <summary>
+        /// Visualize roll angle and direction to origin (or height above ground).
+        /// </summary>
+        public void Update(CameraBox Camera)
+        {
+            Vector3D leftDirection = Camera.LeftDirection.Rotate(Camera.LookDirection, -Camera.RollAngle);
 
-			double length = 0.007;
-			Point3D position = Camera.Position + (Camera.NearPlaneDistance + 1.1 * length) * Camera.LookDirection;
-			Point3D pt = position + length * leftDirection;
-			horizon.SetLocation(pt, pt + 2 * (position - pt));
+            double length = 0.007;
+            Point3D position = Camera.Position + (Camera.NearPlaneDistance + 1.1 * length) * Camera.LookDirection;
+            Point3D pt = position + length * leftDirection;
+            horizon.SetLocation(pt, pt + 2 * (position - pt));
 
-			Vector3D toTarget = TargetPoint - position;
-			toTarget.Normalize();
-			targetIndicator.SetLocation(position, position + length * toTarget);
-		}
-	}
+            Vector3D toTarget = TargetPoint - position;
+            toTarget.Normalize();
+            targetIndicator.SetLocation(position, position + length * toTarget);
+        }
+    }
 }

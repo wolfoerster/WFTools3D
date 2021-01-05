@@ -21,41 +21,41 @@ using System.Windows.Media.Media3D;
 
 namespace WFTools3D
 {
-	/// <summary>
-	/// A stick with a ball at each end.
-	/// </summary>
-	public class Bone : Object3D
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		public Bone(double radius, double factor, Brush brush1, Brush brush2, Brush brush3)
-		{
-			stick.Divisions = 6;
-			stick.Radius = radius;
+    /// <summary>
+    /// A stick with a ball at each end.
+    /// </summary>
+    public class Bone : Object3D
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public Bone(double radius, double factor, Brush brush1, Brush brush2, Brush brush3)
+        {
+            stick.Divisions = 6;
+            stick.Radius = radius;
 
-			ball1.Divisions = ball2.Divisions = 4;
-			ball1.Radius = ball2.Radius = factor * radius;
+            ball1.Divisions = ball2.Divisions = 4;
+            ball1.Radius = ball2.Radius = factor * radius;
 
-			stick.DiffuseMaterial.Brush = brush1;
-			ball1.DiffuseMaterial.Brush = brush2;
-			ball2.DiffuseMaterial.Brush = brush3;
+            stick.DiffuseMaterial.Brush = brush1;
+            ball1.DiffuseMaterial.Brush = brush2;
+            ball2.DiffuseMaterial.Brush = brush3;
 
-			Children.Add(ball1);
-			Children.Add(ball2);
-			Children.Add(stick);
-		}
-		Sphere ball1 = new Sphere();
-		Sphere ball2 = new Sphere();
-		Cylinder stick = new Cylinder();
+            Children.Add(ball1);
+            Children.Add(ball2);
+            Children.Add(stick);
+        }
+        Sphere ball1 = new Sphere();
+        Sphere ball2 = new Sphere();
+        Cylinder stick = new Cylinder();
 
-		/// <summary>
-		/// 
-		/// </summary>
-		public void SetLocation(Point3D from, Point3D to)
-		{
-			ball1.Position = stick.From = from;
-			ball2.Position = stick.To = to;
-		}
-	}
+        /// <summary>
+        /// 
+        /// </summary>
+        public void SetLocation(Point3D from, Point3D to)
+        {
+            ball1.Position = stick.From = from;
+            ball2.Position = stick.To = to;
+        }
+    }
 }

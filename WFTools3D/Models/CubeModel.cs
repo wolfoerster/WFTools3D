@@ -19,38 +19,38 @@ using System.Windows.Media.Media3D;
 
 namespace WFTools3D
 {
-	public class CubeModel : Object3D
-	{
-		public CubeModel(int divisions = 1)
-		{
-			Right = InitSquare(Math3D.UnitX, divisions);
-			Left = InitSquare(-Math3D.UnitX, divisions);
-			Rear = InitSquare(Math3D.UnitY, divisions);
-			Front = InitSquare(-Math3D.UnitY, divisions);
-			Top = InitSquare(Math3D.UnitZ, divisions);
-			Bottom = InitSquare(-Math3D.UnitZ, divisions);
-		}
+    public class CubeModel : Object3D
+    {
+        public CubeModel(int divisions = 1)
+        {
+            Right = InitSquare(Math3D.UnitX, divisions);
+            Left = InitSquare(-Math3D.UnitX, divisions);
+            Rear = InitSquare(Math3D.UnitY, divisions);
+            Front = InitSquare(-Math3D.UnitY, divisions);
+            Top = InitSquare(Math3D.UnitZ, divisions);
+            Bottom = InitSquare(-Math3D.UnitZ, divisions);
+        }
 
-		public Square Left, Right, Front, Rear, Top, Bottom;
+        public Square Left, Right, Front, Rear, Top, Bottom;
 
-		private Square InitSquare(Vector3D v, int divisions)
-		{
-			Square square = new Square(divisions);
-			square.LockUpdates(true);
-			square.Position = (Point3D)v;
-			if (v.Z == 0)
-			{
-				square.Rotation1 = Math3D.RotationX(90);
-				square.Rotation2 = Math3D.RotationZ(90 * (v.X != 0 ? v.X : (v.Y + 1)));
-			}
-			else if (v.Z < 0)
-			{
-				square.Rotation1 = Math3D.RotationX(180);
-			}
-			square.LockUpdates(false);
-			square.Transform.Freeze();
-			Children.Add(square);
-			return square;
-		}
-	}
+        private Square InitSquare(Vector3D v, int divisions)
+        {
+            Square square = new Square(divisions);
+            square.LockUpdates(true);
+            square.Position = (Point3D)v;
+            if (v.Z == 0)
+            {
+                square.Rotation1 = Math3D.RotationX(90);
+                square.Rotation2 = Math3D.RotationZ(90 * (v.X != 0 ? v.X : (v.Y + 1)));
+            }
+            else if (v.Z < 0)
+            {
+                square.Rotation1 = Math3D.RotationX(180);
+            }
+            square.LockUpdates(false);
+            square.Transform.Freeze();
+            Children.Add(square);
+            return square;
+        }
+    }
 }

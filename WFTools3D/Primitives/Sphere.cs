@@ -21,30 +21,30 @@ using System.Windows.Media.Media3D;
 
 namespace WFTools3D
 {
-	/// <summary>
-	/// A sphere centered at the origin with radius 1.
-	/// </summary>
-	public class Sphere : Primitive3D
-	{
-		public Sphere()
-			: base(8)
-		{
-		}
+    /// <summary>
+    /// A sphere centered at the origin with radius 1.
+    /// </summary>
+    public class Sphere : Primitive3D
+    {
+        public Sphere()
+            : base(8)
+        {
+        }
 
-		public Sphere(int divisions)
-			: base(divisions)
-		{
-		}
+        public Sphere(int divisions)
+            : base(divisions)
+        {
+        }
 
-		public double Radius
-		{
-			get { return ScaleX; }
-			set { ScaleX = ScaleY = ScaleZ = value; }
-		}
+        public double Radius
+        {
+            get { return ScaleX; }
+            set { ScaleX = ScaleY = ScaleZ = value; }
+        }
 
-		protected override MeshGeometry3D CreateMesh()
-		{
-			return MeshUtils.CreateSphere(divisions);
-		}
-	}
+        protected override MeshGeometry3D CreateMesh()
+        {
+            return MeshUtils.CreateSphere(divisions);
+        }
+    }
 }

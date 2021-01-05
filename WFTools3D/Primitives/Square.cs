@@ -14,81 +14,77 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //******************************************************************************************
-using System;
-using System.Windows;
 using System.Windows.Media.Media3D;
 
 namespace WFTools3D
 {
-	/// <summary>
-	/// A rectangle in the xy plane centered at the origin with size 2 (from -1 to +1 in both x and y).
-	/// </summary>
-	public class Square : Primitive3D
-	{
-		public Square()
-			: base(1)
-		{
-		}
+    /// <summary>
+    /// A rectangle in the xy plane centered at the origin with size 2 (from -1 to +1 in both x and y).
+    /// </summary>
+    public class Square : Primitive3D
+    {
+        public Square()
+            : base(1)
+        {
+        }
 
-		public Square(int divisions)
-			: base(divisions)
-		{
-		}
+        public Square(int divisions)
+            : base(divisions)
+        {
+        }
 
-#if todo
-		/// <summary>
-		/// Gets or sets the extent in x.
-		/// </summary>
-		public Range RangeX
-		{
-			get { return new Range(Position.X - ScaleX, Position.X + ScaleX); }
-			set
-			{
-				LockUpdates(true);
-				ScaleX = value.Width * 0.5;
-				Point3D position = Position;
-				position.X = value.Center;
-				Position = position;
-				LockUpdates(false);
-			}
-		}
+        /// <summary>
+        /// Gets or sets the extent in x.
+        /// </summary>
+        public Range RangeX
+        {
+            get { return new Range(Position.X - ScaleX, Position.X + ScaleX); }
+            set
+            {
+                LockUpdates(true);
+                ScaleX = value.Width * 0.5;
+                Point3D position = Position;
+                position.X = value.Center;
+                Position = position;
+                LockUpdates(false);
+            }
+        }
 
-		/// <summary>
-		/// Gets or sets the extent in y.
-		/// </summary>
-		public Range RangeY
-		{
-			get { return new Range(Position.Y - ScaleY, Position.Y + ScaleY); }
-			set
-			{
-				LockUpdates(true);
-				ScaleY = value.Width * 0.5;
-				Point3D position = Position;
-				position.Y = value.Center;
-				Position = position;
-				LockUpdates(false);
-			}
-		}
+        /// <summary>
+        /// Gets or sets the extent in y.
+        /// </summary>
+        public Range RangeY
+        {
+            get { return new Range(Position.Y - ScaleY, Position.Y + ScaleY); }
+            set
+            {
+                LockUpdates(true);
+                ScaleY = value.Width * 0.5;
+                Point3D position = Position;
+                position.Y = value.Center;
+                Position = position;
+                LockUpdates(false);
+            }
+        }
 
-		/// <summary>
-		/// Gets or sets the extent in x and y.
-		/// </summary>
-		public Area Area
-		{
-			get { return new Area(RangeX, RangeY); }
-			set
-			{
-				LockUpdates(true);
-				RangeX = value.RangeX;
-				RangeY = value.RangeY;
-				LockUpdates(false);
-			}
-		}
-#endif
+        /// <summary>
+        /// Gets or sets the extent in x and y.
+        /// </summary>
+        public Area Area
+        {
+            get { return new Area(RangeX, RangeY); }
+            set
+            {
+                LockUpdates(true);
+                RangeX = value.RangeX;
+                RangeY = value.RangeY;
+                LockUpdates(false);
+            }
+        }
 
-		protected override MeshGeometry3D CreateMesh()
-		{
-			return MeshUtils.CreateSquare(divisions);
-		}
-	}
+        protected override MeshGeometry3D CreateMesh()
+        {
+            return MeshUtils.CreateSquare(divisions);
+        }
+    }
 }

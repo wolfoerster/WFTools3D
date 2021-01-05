@@ -19,53 +19,53 @@ using System.Windows.Media.Media3D;
 
 namespace WFTools3D
 {
-	/// <summary>
-	/// 
-	/// </summary>
-	public class Lighting : ModelVisual3D
-	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Lighting"/> class.
-		/// </summary>
-		public Lighting()
-		{
-			Content = lightingGroup;
-			lightingGroup.Children.Add(ambientLight);
-			lightingGroup.Children.Add(directionalLight1);
-			lightingGroup.Children.Add(directionalLight2);
-		}
+    /// <summary>
+    /// 
+    /// </summary>
+    public class Lighting : ModelVisual3D
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Lighting"/> class.
+        /// </summary>
+        public Lighting()
+        {
+            Content = lightingGroup;
+            lightingGroup.Children.Add(ambientLight);
+            lightingGroup.Children.Add(directionalLight1);
+            lightingGroup.Children.Add(directionalLight2);
+        }
 
-		public Model3DGroup LightingGroup
-		{
-			get { return lightingGroup; }
-		}
-		Model3DGroup lightingGroup = new Model3DGroup();
+        public Model3DGroup LightingGroup
+        {
+            get { return lightingGroup; }
+        }
+        Model3DGroup lightingGroup = new Model3DGroup();
 
-		/// <summary>
-		/// 
-		/// </summary>
-		public AmbientLight AmbientLight
-		{
-			get { return ambientLight; }
-		}
-		AmbientLight ambientLight = new AmbientLight(Colors.White);
+        /// <summary>
+        /// 
+        /// </summary>
+        public AmbientLight AmbientLight
+        {
+            get { return ambientLight; }
+        }
+        AmbientLight ambientLight = new AmbientLight(Colors.White);
 
-		/// <summary>
-		/// 
-		/// </summary>
-		public DirectionalLight DirectionalLight1 
-		{
-			get { return directionalLight1; }
-		}
-		DirectionalLight directionalLight1 = new DirectionalLight(Colors.White, new Vector3D(23, 28, -15));
+        /// <summary>
+        /// 
+        /// </summary>
+        public DirectionalLight DirectionalLight1
+        {
+            get { return directionalLight1; }
+        }
+        DirectionalLight directionalLight1 = new DirectionalLight(Colors.White, new Vector3D(23, 28, -15));
 
-		/// <summary>
-		/// 
-		/// </summary>
-		public DirectionalLight DirectionalLight2
-		{
-			get { return directionalLight2; }
-		}
-		DirectionalLight directionalLight2 = new DirectionalLight(Colors.White, new Vector3D(-23, -28, -15));
-	}
+        /// <summary>
+        /// 
+        /// </summary>
+        public DirectionalLight DirectionalLight2
+        {
+            get { return directionalLight2; }
+        }
+        DirectionalLight directionalLight2 = new DirectionalLight(Colors.White, new Vector3D(-23, -28, -15));
+    }
 }

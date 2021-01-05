@@ -25,88 +25,88 @@ using System.Reflection;
 
 namespace WFTools3D
 {
-	/// <summary>
-	/// A small airplane.
-	/// </summary>
-	public class Airplane : Object3D
-	{
-		static Airplane()
-		{
-			try
-			{
-				Assembly assembly = Assembly.GetExecutingAssembly();
-				string[] names = assembly.GetManifestResourceNames();
-				string name = names.FirstOrDefault(x => x.Contains("WFTools3D.jpg"));
-				if (name != null)
-				{
-					Stream stream = assembly.GetManifestResourceStream(name);
-					if (stream != null)
-					{
-						BitmapImage bitmap = new BitmapImage();
-						bitmap.BeginInit();
-						bitmap.StreamSource = stream;
-						bitmap.EndInit();
-						ImageBrush imbrush = new ImageBrush(bitmap);
-						imbrush.TileMode = TileMode.Tile;
-						imbrush.Viewport = new Rect(0, 0, 0.5, 1);
-						imbrush.Freeze();
-						brush = imbrush;
-					}
-				}
-			}
-			catch
-			{
-				brush = Brushes.Silver;
-			}
-		}
-		static Brush brush;
+    /// <summary>
+    /// A small airplane.
+    /// </summary>
+    public class Airplane : Object3D
+    {
+        static Airplane()
+        {
+            try
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                string[] names = assembly.GetManifestResourceNames();
+                string name = names.FirstOrDefault(x => x.Contains("WFTools3D.jpg"));
+                if (name != null)
+                {
+                    Stream stream = assembly.GetManifestResourceStream(name);
+                    if (stream != null)
+                    {
+                        BitmapImage bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        bitmap.StreamSource = stream;
+                        bitmap.EndInit();
+                        ImageBrush imbrush = new ImageBrush(bitmap);
+                        imbrush.TileMode = TileMode.Tile;
+                        imbrush.Viewport = new Rect(0, 0, 0.5, 1);
+                        imbrush.Freeze();
+                        brush = imbrush;
+                    }
+                }
+            }
+            catch
+            {
+                brush = Brushes.Silver;
+            }
+        }
+        static Brush brush;
 
-		public Airplane()
-		{
-			Cylinder body = new Cylinder();
-			body.DiffuseMaterial.Brush = brush;
-			body.To = new Point3D(0, -1, 0);
-			body.From = new Point3D(0, 0.4, 0);
-			body.IsClosed = true;
-			body.Radius = 0.1;
-			Children.Add(body);
+        public Airplane()
+        {
+            Cylinder body = new Cylinder();
+            body.DiffuseMaterial.Brush = brush;
+            body.To = new Point3D(0, -1, 0);
+            body.From = new Point3D(0, 0.4, 0);
+            body.IsClosed = true;
+            body.Radius = 0.1;
+            Children.Add(body);
 
-			Cone head = new Cone();
-			head.DiffuseMaterial.Brush = Brushes.Red;
-			head.Rotation1 = Math3D.RotationX(-90);
-			head.Radius = 0.1;
-			head.ScaleZ = 0.2;
-			head.Position = new Point3D(0, 0.4, 0);
-			Children.Add(head);
+            Cone head = new Cone();
+            head.DiffuseMaterial.Brush = Brushes.Red;
+            head.Rotation1 = Math3D.RotationX(-90);
+            head.Radius = 0.1;
+            head.ScaleZ = 0.2;
+            head.Position = new Point3D(0, 0.4, 0);
+            Children.Add(head);
 
-			Cylinder wings = new Cylinder();
-			wings.DiffuseMaterial.Brush = Brushes.Yellow;
-			wings.From = new Point3D(-1, 0, -0.01);
-			wings.To = new Point3D(1, 0, -0.01);
-			wings.ScaleX = 0.015;
-			wings.ScaleY = 0.1;
-			wings.IsClosed = true;
-			Children.Add(wings);
+            Cylinder wings = new Cylinder();
+            wings.DiffuseMaterial.Brush = Brushes.Yellow;
+            wings.From = new Point3D(-1, 0, -0.01);
+            wings.To = new Point3D(1, 0, -0.01);
+            wings.ScaleX = 0.015;
+            wings.ScaleY = 0.1;
+            wings.IsClosed = true;
+            Children.Add(wings);
 
-			Cylinder tail = new Cylinder();
-			tail.DiffuseMaterial.Brush = Brushes.Yellow;
-			tail.From = new Point3D(-0.35, -0.9, 0.03);
-			tail.To = new Point3D(0.35, -0.9, 0.03);
-			tail.ScaleX = 0.015;
-			tail.ScaleY = 0.1;
-			tail.IsClosed = true;
-			Children.Add(tail);
+            Cylinder tail = new Cylinder();
+            tail.DiffuseMaterial.Brush = Brushes.Yellow;
+            tail.From = new Point3D(-0.35, -0.9, 0.03);
+            tail.To = new Point3D(0.35, -0.9, 0.03);
+            tail.ScaleX = 0.015;
+            tail.ScaleY = 0.1;
+            tail.IsClosed = true;
+            Children.Add(tail);
 
-			Cylinder fin = new Cylinder();
-			fin.DiffuseMaterial.Brush = Brushes.Green;
-			fin.UpperRadius = 0.5;
-			fin.IsClosed = true;
-			fin.ScaleX = 0.015;
-			fin.ScaleY = 0.1;
-			fin.ScaleZ = 0.3;
-			fin.Position = new Point3D(0, -0.9, 0);
-			fin.Rotation2 = Math3D.RotationX(10);
-			Children.Add(fin);
-		}
-	}
+            Cylinder fin = new Cylinder();
+            fin.DiffuseMaterial.Brush = Brushes.Green;
+            fin.UpperRadius = 0.5;
+            fin.IsClosed = true;
+            fin.ScaleX = 0.015;
+            fin.ScaleY = 0.1;
+            fin.ScaleZ = 0.3;
+            fin.Position = new Point3D(0, -0.9, 0);
+            fin.Rotation2 = Math3D.RotationX(10);
+            Children.Add(fin);
+        }
+    }
 }

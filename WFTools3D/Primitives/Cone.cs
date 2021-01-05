@@ -20,38 +20,38 @@ using System.Windows.Media.Media3D;
 
 namespace WFTools3D
 {
-	/// <summary>
-	/// A cone based in the xy plane with the base circle centered at the origin and a height of 1.<para/>
-	/// NOTE: The Position property corresponds with centre of the base circle and not with the center of the body (as it does for Cube or Sphere).
-	/// </summary>
-	public class Cone : Primitive3D
-	{
-		public Cone()
-			: base(32)
-		{
-		}
+    /// <summary>
+    /// A cone based in the xy plane with the base circle centered at the origin and a height of 1.<para/>
+    /// NOTE: The Position property corresponds with centre of the base circle and not with the center of the body (as it does for Cube or Sphere).
+    /// </summary>
+    public class Cone : Primitive3D
+    {
+        public Cone()
+            : base(32)
+        {
+        }
 
-		public Cone(int divisions)
-			: base(divisions)
-		{
-		}
+        public Cone(int divisions)
+            : base(divisions)
+        {
+        }
 
-		public bool IsClosed
-		{
-			get { return isClosed; }
-			set { isClosed = value; InitMesh(); }
-		}
-		private bool isClosed = false;
+        public bool IsClosed
+        {
+            get { return isClosed; }
+            set { isClosed = value; InitMesh(); }
+        }
+        private bool isClosed = false;
 
-		public double Radius
-		{
-			get { return ScaleX; }
-			set { ScaleX = ScaleY = value; }
-		}
+        public double Radius
+        {
+            get { return ScaleX; }
+            set { ScaleX = ScaleY = value; }
+        }
 
-		protected override MeshGeometry3D CreateMesh()
-		{
-			return MeshUtils.CreateCone(divisions, isClosed);
-		}
-	}
+        protected override MeshGeometry3D CreateMesh()
+        {
+            return MeshUtils.CreateCone(divisions, isClosed);
+        }
+    }
 }

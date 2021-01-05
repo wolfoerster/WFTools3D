@@ -20,51 +20,51 @@ using System.Windows.Media.Media3D;
 
 namespace WFTools3D
 {
-	/// <summary>
-	/// A disk or disk segment in the xy plane centered at the origin with radius 1.
-	/// </summary>
-	public class Disk : Primitive3D
-	{
-		public Disk()
-			: base(32)
-		{
-		}
+    /// <summary>
+    /// A disk or disk segment in the xy plane centered at the origin with radius 1.
+    /// </summary>
+    public class Disk : Primitive3D
+    {
+        public Disk()
+            : base(32)
+        {
+        }
 
-		public Disk(int divisions)
-			: base(divisions)
-		{
-		}
+        public Disk(int divisions)
+            : base(divisions)
+        {
+        }
 
-		public double Radius
-		{
-			get { return ScaleX; }
-			set { ScaleX = ScaleY = value; }
-		}
+        public double Radius
+        {
+            get { return ScaleX; }
+            set { ScaleX = ScaleY = value; }
+        }
 
-		public double InnerRadius
-		{
-			get { return innerRadius; }
-			set { innerRadius = value; InitMesh(); }
-		}
-		private double innerRadius = 0;
+        public double InnerRadius
+        {
+            get { return innerRadius; }
+            set { innerRadius = value; InitMesh(); }
+        }
+        private double innerRadius = 0;
 
-		public double StartDegrees
-		{
-			get { return startDegrees; }
-			set { startDegrees = value; InitMesh(); }
-		}
-		private double startDegrees = 0;
+        public double StartDegrees
+        {
+            get { return startDegrees; }
+            set { startDegrees = value; InitMesh(); }
+        }
+        private double startDegrees = 0;
 
-		public double StopDegrees
-		{
-			get { return stopDegrees; }
-			set { stopDegrees = value; InitMesh(); }
-		}
-		private double stopDegrees = 360;
+        public double StopDegrees
+        {
+            get { return stopDegrees; }
+            set { stopDegrees = value; InitMesh(); }
+        }
+        private double stopDegrees = 360;
 
-		protected override MeshGeometry3D CreateMesh()
-		{
-			return MeshUtils.CreateDiskSegment(divisions, innerRadius / Radius, startDegrees, stopDegrees);
-		}
-	}
+        protected override MeshGeometry3D CreateMesh()
+        {
+            return MeshUtils.CreateDiskSegment(divisions, innerRadius / Radius, startDegrees, stopDegrees);
+        }
+    }
 }

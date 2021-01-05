@@ -19,57 +19,61 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Windows.Media.Media3D;
 
+#if WFToolsAvailable
+using WFTools;
+#endif
+
 namespace WFTools3D
 {
-	/// <summary>
-	/// A tube with a given radius along a given path.
-	/// </summary>
-	public class Tube : Primitive3D
-	{
-		public Tube()
-			: base(12)
-		{
-		}
+    /// <summary>
+    /// A tube with a given radius along a given path.
+    /// </summary>
+    public class Tube : Primitive3D
+    {
+        public Tube()
+            : base(16)
+        {
+        }
 
-		public Tube(int divisions)
-			: base(divisions)
-		{
-		}
+        public Tube(int divisions)
+            : base(divisions)
+        {
+        }
 
-		public double Radius
-		{
-			get { return radius; }
-			set { radius = value; InitMesh(); }
-		}
-		private double radius = 0.2;
+        public double Radius
+        {
+            get { return radius; }
+            set { radius = value; InitMesh(); }
+        }
+        private double radius = 0.2;
 
-		public IList<Point3D> Path
-		{
-			get { return path; }
-			set { path = value; InitMesh(); }
-		}
-		IList<Point3D> path;
+        public IList<Point3D> Path
+        {
+            get { return path; }
+            set { path = value; InitMesh(); }
+        }
+        IList<Point3D> path;
 
-		public bool IsPathClosed
-		{
-			get { return isPathClosed; }
-			set { isPathClosed = value; }
-		}
-		private bool isPathClosed;
+        public bool IsPathClosed
+        {
+            get { return isPathClosed; }
+            set { isPathClosed = value; InitMesh(); }
+        }
+        private bool isPathClosed;
 
-		protected override MeshGeometry3D CreateMesh()
-		{
-			if (divisions < 3 || divisions > 999 || radius <= 0 || path == null || path.Count < 2)
-				return null;
+        protected override MeshGeometry3D CreateMesh()
+        {
+            if (divisions < 3 || divisions > 999 || radius <= 0 || path == null || path.Count < 2)
+                return null;
 
-			List<Point> section = new List<Point>(divisions + 1);
-			for (int id = 0; id <= divisions; id++)
-			{
-				double phi = id * MathUtils.PIx2 / divisions;
-				section.Add(new Point(radius * Math.Cos(phi), radius * Math.Sin(phi)));
-			}
+            List<Point> section = new List<Point>(divisions + 1);
+            for (int id = 0; id <= divisions; id++)
+            {
+                double phi = id * MathUtils.PIx2 / divisions;
+                section.Add(new Point(radius * Math.Cos(phi), radius * Math.Sin(phi)));
+            }
 
-			return MeshUtils.CreateTube(path, section, isPathClosed);
-		}
-	}
+            return MeshUtils.CreateTube(path, section, isPathClosed);
+        }
+    }
 }

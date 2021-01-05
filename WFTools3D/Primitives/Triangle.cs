@@ -20,45 +20,45 @@ using System.Windows.Media.Media3D;
 
 namespace WFTools3D
 {
-	/// <summary>
-	/// A triangle in the xy plane with points P1=(0,0,0), P2=(1,0,0) and P3=(0,1,0).
-	/// </summary>
-	public class Triangle : Primitive3D
-	{
-		public Triangle()
-			: base(1)
-		{
-		}
+    /// <summary>
+    /// A triangle in the xy plane with points P1=(0,0,0), P2=(1,0,0) and P3=(0,1,0).
+    /// </summary>
+    public class Triangle : Primitive3D
+    {
+        public Triangle()
+            : base(1)
+        {
+        }
 
-		public Triangle(int divisions)
-			: base(divisions)
-		{
-		}
+        public Triangle(int divisions)
+            : base(divisions)
+        {
+        }
 
-		public Point3D P1
-		{
-			get { return p1; }
-			set { p1 = value; InitMesh(); }
-		}
-		private Point3D p1 = new Point3D(0, 0, 0);
+        public Point3D P1
+        {
+            get { return p1; }
+            set { p1 = value; InitMesh(); }
+        }
+        private Point3D p1 = new Point3D(0, 0, 0);
 
-		public Point3D P2
-		{
-			get { return p2; }
-			set { p2 = value; InitMesh(); }
-		}
-		private Point3D p2 = new Point3D(1, 0, 0);
+        public Point3D P2
+        {
+            get { return p2; }
+            set { p2 = value; InitMesh(); }
+        }
+        private Point3D p2 = new Point3D(1, 0, 0);
 
-		public Point3D P3
-		{
-			get { return p3; }
-			set { p3 = value; InitMesh(); }
-		}
-		private Point3D p3 = new Point3D(0, 1, 0);
+        public Point3D P3
+        {
+            get { return p3; }
+            set { p3 = value; InitMesh(); }
+        }
+        private Point3D p3 = new Point3D(0, 1, 0);
 
-		protected override MeshGeometry3D CreateMesh()
-		{
-			return MeshUtils.CreateTriangle(p1, p2, p3, divisions);
-		}
-	}
+        protected override MeshGeometry3D CreateMesh()
+        {
+            return MeshUtils.CreateTriangle(p1, p2, p3, divisions);
+        }
+    }
 }

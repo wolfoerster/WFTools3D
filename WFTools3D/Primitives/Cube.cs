@@ -21,32 +21,32 @@ using System.Windows.Media.Media3D;
 
 namespace WFTools3D
 {
-	/// <summary>
-	/// A cube centered at the origin with extent of 1 in all directions.<para/>
-	/// The Position property corresponds with the overall centre of the cube (same as it does for a Sphere).
-	/// </summary>
-	public class Cube : Primitive3D
-	{
-		public Cube()
-			: base(1)
-		{
-		}
+    /// <summary>
+    /// A cube centered at the origin with extent of 1 in all directions.<para/>
+    /// The Position property corresponds with the overall centre of the cube (same as it does for a Sphere).
+    /// </summary>
+    public class Cube : Primitive3D
+    {
+        public Cube()
+            : base(1)
+        {
+        }
 
-		public Cube(int divisions)
-			: base(divisions)
-		{
-		}
+        public Cube(int divisions)
+            : base(divisions)
+        {
+        }
 
-		public bool IsClosed
-		{
-			get { return isClosed; }
-			set { isClosed = value; InitMesh(); }
-		}
-		private bool isClosed = true;
+        public bool IsClosed
+        {
+            get { return isClosed; }
+            set { isClosed = value; InitMesh(); }
+        }
+        private bool isClosed = true;
 
-		protected override MeshGeometry3D CreateMesh()
-		{
-			return MeshUtils.CreateCube(divisions, isClosed);
-		}
-	}
+        protected override MeshGeometry3D CreateMesh()
+        {
+            return MeshUtils.CreateCube(divisions, isClosed);
+        }
+    }
 }
