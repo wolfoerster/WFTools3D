@@ -95,6 +95,18 @@ namespace WFTools3D
             this.rangeY = rangeY;
         }
 
+        public Area(double left, double top, double right, double bottom)
+        {
+            rangeX = new Range(left, right);
+            rangeY = new Range(bottom, top);
+        }
+
+        public Area(Point topLeft, Point bottomRight)
+        {
+            rangeX = new Range(topLeft.X, bottomRight.X);
+            rangeY = new Range(bottomRight.Y, topLeft.Y);
+        }
+
         public Range RangeX
         {
             get { return rangeX; }
