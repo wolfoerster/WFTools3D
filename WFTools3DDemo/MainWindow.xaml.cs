@@ -243,7 +243,7 @@ namespace WFTools3DDemo
             AddInfo("Wheel:", "Increase/decrease field of view");
             AddInfo("H:", "Toggle airplanes and ADI");
             AddInfo();
-            AddInfo("SPEED <> 0", "――――――――――――――");
+            AddInfo("SPEED != 0", "――――――――――――――");
             AddInfo("LMB,");
             AddInfo("Arrows:", "Change pitch and roll angles");
             AddInfo("Ctrl+LMB", "Change look direction");
