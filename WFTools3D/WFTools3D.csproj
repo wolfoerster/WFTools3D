@@ -44,6 +44,7 @@
     <Compile Include="Models\Bone.cs" />
     <Compile Include="Basics\CameraBox.cs" />
     <Compile Include="Models\CubeModel.cs" />
+    <Compile Include="Models\Pendulum.cs" />
     <Compile Include="Models\RunningMan.cs" />
     <Compile Include="Primitives\Cone.cs" />
     <Compile Include="Primitives\Cube.cs" />

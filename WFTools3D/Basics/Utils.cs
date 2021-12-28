@@ -23,6 +23,7 @@ using System.Windows.Controls;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Controls.Primitives;
+using System.Globalization;
 
 #if WFToolsAvailable
 using WFTools;
@@ -140,31 +141,31 @@ namespace WFTools3D
             return Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) || Keyboard.IsKeyDown(Key.System);
         }
 
+        public static Point ToDip(this Point pointInPixel, Visual visual)
+        {
+            var dpi = VisualTreeHelper.GetDpi(visual);
+            var pt = pointInPixel;
+            pt.X /= dpi.DpiScaleX;
+            pt.Y /= dpi.DpiScaleY;
+            return pt;
+        }
+
+        public static Point ToPixel(this Point pointInDip, Visual visual)
+        {
+            var dpi = VisualTreeHelper.GetDpi(visual);
+            var pt = pointInDip;
+            pt.X *= dpi.DpiScaleX;
+            pt.Y *= dpi.DpiScaleY;
+            return pt;
+        }
+
         /// <summary>
         /// Gets the resolution in DPI of the target device of a visual.
         /// </summary>
         static public Point GetResolution(Visual visual)
         {
-            Point dpi = new Point(120, 120);
-
-            PresentationSource source = PresentationSource.FromVisual(visual);
-            if (source == null)
-                return dpi;
-
-            CompositionTarget target = source.CompositionTarget;
-
-            Matrix m = target.TransformToDevice;
-            MatrixTransform t = new MatrixTransform(m);
-
-            Point pt1 = new Point(0, 0);
-            pt1 = t.Transform(pt1);
-
-            Point pt2 = new Point(96, 96);
-            pt2 = t.Transform(pt2);
-
-            dpi.X = pt2.X - pt1.X;
-            dpi.Y = pt2.Y - pt1.Y;
-            return dpi;
+            var dps = VisualTreeHelper.GetDpi(visual);
+            return new Point(dps.PixelsPerInchX, dps.PixelsPerInchY);
         }
 
         #region GetAllScreens
@@ -350,12 +351,142 @@ namespace WFTools3D
             return Math.Min(Math.Max(value, minValue), maxValue);
         }
 
+        public static int Clamp(int value, int minValue, int maxValue)
+        {
+            return Math.Min(Math.Max(value, minValue), maxValue);
+        }
+
         public static bool IsValid(this Point pt)
         {
             if (!MathUtils.IsValidNumber(pt.X) || !MathUtils.IsValidNumber(pt.Y))
                 return false;
 
             return true;
+        }
+
+        /// <summary>
+        /// Extended ToString() method. Converts the numeric value of this double to a string, using the specified format.<para/>
+        /// There are two additional features on top of the basic double.ToString() implementation:<para/>
+        /// 1. New format specifier 's' or 'S' to specify the number of significant figures.<para/>
+        /// 2. Optimized scientific notation (remove dispensable characters, e.g. 1.2300e+004 will become 1.23e4)
+        /// </summary>
+        /// <param name="value">The double value.</param>
+        /// <param name="format">The format specifier. If this is null or empty, "g4" is used.</param>
+        public static string ToStringExt(this double value, string format = null)
+        {
+            NumberFormatInfo currentInfo = CultureInfo.CurrentCulture.NumberFormat;
+
+            //--- Do we have a special value?
+            if (double.IsNaN(value))
+                return currentInfo.NaNSymbol;
+
+            if (double.IsPositiveInfinity(value))
+                return currentInfo.PositiveInfinitySymbol;
+
+            if (double.IsNegativeInfinity(value))
+                return currentInfo.NegativeInfinitySymbol;
+
+            if (string.IsNullOrWhiteSpace(format))
+                format = "g4";
+
+            if (format[0] == 's' || format[0] == 'S')
+            {
+                // If you round '0.002' to 3 significant figures, the resulting string should be '0.00200'.
+                int sigFigures;
+                int.TryParse(format.Remove(0, 1), out sigFigures);
+
+                int roundingPosition = 0;
+                double roundedValue = RoundSignificantDigits(value, sigFigures, out roundingPosition);
+
+                //--- 0 shall be formatted as 1 or any other integer < 10:
+                if (roundedValue == 0.0d)
+                {
+                    sigFigures = Clamp(sigFigures, 1, 14);
+                    return string.Format(currentInfo, "{0:F" + (sigFigures - 1) + "}", value);
+                }
+
+                // Check if the rounding position is positive and is not past 100 decimal places.
+                // If the rounding position is greater than 100, string.format won't represent the number correctly.
+                // ToDo:  What happens when the rounding position is greater than 100?
+                if (roundingPosition > 0 && roundingPosition < 100)
+                    return string.Format(currentInfo, "{0:F" + roundingPosition + "}", roundedValue);
+
+                return roundedValue.ToString("F0", currentInfo);
+            }
+
+            //--- Convert to string using format
+            string text = value.ToString(format, currentInfo);
+
+            //--- If text is not in scientific notation, just return it as is:
+            int e = text.IndexOfAny(new char[] { 'e', 'E' });
+            if (e < 0)
+                return text;
+
+            //--- Remove trailing zeros and possibly decimal separator from the mantissa
+            char sep = currentInfo.NumberDecimalSeparator[0];
+            string mantissa = text.Substring(0, e);
+
+            mantissa = mantissa.TrimEnd(new char[] { '0', sep });
+            if (mantissa.Length == 0)
+                return "0";
+
+            //--- Remove leading zeros and possibly plus sign from the exponent
+            char negativeSign = currentInfo.NegativeSign[0];
+            char positiveSign = currentInfo.PositiveSign[0];
+
+            string exponent = text.Substring(e + 1);
+            bool isNegative = exponent[0] == negativeSign;
+
+            exponent = exponent.Trim(new char[] { '0', positiveSign, negativeSign });
+            if (exponent.Length == 0)
+                return mantissa;
+
+            //--- Build up the result
+            if (isNegative)
+                return mantissa + text[e] + negativeSign + exponent;
+
+            return mantissa + text[e] + exponent;
+        }
+
+        public static double RoundSignificantDigits(this double value, int sigFigures)
+        {
+            return RoundSignificantDigits(value, sigFigures, out _);
+        }
+
+        private static double RoundSignificantDigits(double value, int sigFigures, out int roundingPosition)
+        {
+            // the sigFigures parameter must be between 0 and 15, exclusive.
+            roundingPosition = 0;
+
+            if (double.IsNaN(value))
+                return double.NaN;
+
+            if (double.IsPositiveInfinity(value))
+                return double.PositiveInfinity;
+
+            if (double.IsNegativeInfinity(value))
+                return double.NegativeInfinity;
+
+            //--- have to set a limit somewhere
+            if (Math.Abs(value) <= 1e-98)
+                return 0;
+
+            //--- don't throw exceptions if sigFigures is out of range
+            sigFigures = Clamp(sigFigures, 1, 14);
+
+            // The resulting rounding position will be negative for rounding at whole numbers, and positive for decimal places.
+            roundingPosition = sigFigures - 1 - (int)(Math.Floor(Math.Log10(Math.Abs(value))));
+
+            // Try to use a rounding position directly, if no scale is needed.
+            // This is because the scale mutliplication after the rounding can introduce error, although 
+            // this only happens when you're dealing with really tiny numbers, i.e 9.9e-14.
+            if (roundingPosition > 0 && roundingPosition < 15)
+                return Math.Round(value, roundingPosition, MidpointRounding.AwayFromZero);
+
+            // Shouldn't get here unless we need to scale it.
+            // Set the scaling value, for rounding whole numbers or decimals past 15 places
+            double scale = Math.Pow(10, Math.Ceiling(Math.Log10(Math.Abs(value))));
+            return Math.Round(value / scale, sigFigures, MidpointRounding.AwayFromZero) * scale;
         }
     }
 

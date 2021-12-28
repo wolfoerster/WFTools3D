@@ -190,7 +190,7 @@ namespace WFTools3D
         }
 
         /// <summary>
-		/// Computes the effective view matrix for the given camera.
+        /// Computes the effective view matrix for the given camera.
         /// </summary>
         public static Matrix3D GetViewMatrix(Camera camera)
         {
@@ -983,5 +983,55 @@ namespace WFTools3D
         /// Gets or sets the transformation for z values.
         /// </summary>
         public LinearTransform TZ { get; set; }
+    }
+
+    /// <summary>
+    /// A 3D point in spherical coordinates. Angles are in radians.
+    /// </summary>
+    public struct Point3DS
+    {
+        public Point3DS(double length, double theta, double phi)
+        {
+            Length = length;
+            Theta = theta;
+            Phi = phi;
+        }
+
+        public Point3DS(Point3D pt)
+        {
+            Length = Math.Sqrt(pt.X * pt.X + pt.Y * pt.Y + pt.Z * pt.Z);
+            Theta = Math.Acos(pt.Z / Length);
+            Phi = Math.Atan2(pt.Y, pt.X);
+        }
+
+        /// <summary>
+        /// The length of the position vector.
+        /// </summary>
+        public double Length;
+
+        /// <summary>
+        /// Angle to the z axis in radians.
+        /// </summary>
+        public double Theta;
+
+        /// <summary>
+        /// Angle to the x axis in radians.
+        /// </summary>
+        public double Phi;
+
+        /// <summary>
+        /// Convert this point to cartesian coordinates.
+        /// </summary>
+        public Point3D ToCartesian()
+        {
+            double sinTheta = Math.Sin(Theta);
+
+            Point3D pt = new Point3D(
+                Length * Math.Cos(Phi) * sinTheta,
+                Length * Math.Sin(Phi) * sinTheta,
+                Length * Math.Cos(Theta));
+
+            return pt;
+        }
     }
 }
