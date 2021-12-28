@@ -24,5 +24,17 @@ namespace WFTools3DDemo
     /// </summary>
     public partial class App : Application
     {
+        /*****
+         * Image for Readme.md posted at 'https://postimages.org/'
+         * Link: https://postimg.cc/3dyYD1rw
+         * Direct link: https://i.postimg.cc/gksJQtf3/WFTools3-DDemo.jpg
+         * Markdown: [WFTools3-DDemo.jpg](https://postimg.cc/3dyYD1rw)
+         * Alt Markdown: [![WFTools3-DDemo.jpg](https://i.postimg.cc/gksJQtf3/WFTools3-DDemo.jpg)](https://postimg.cc/3dyYD1rw)
+         * Thumbnail for forums: [url=https://postimg.cc/3dyYD1rw][img]https://i.postimg.cc/3dyYD1rw/WFTools3-DDemo.jpg[/img][/url]
+         * Thumbnail for website: <a href='https://postimg.cc/3dyYD1rw' target='_blank'><img src='https://i.postimg.cc/3dyYD1rw/WFTools3-DDemo.jpg' border='0' alt='WFTools3-DDemo'/></a>
+         * Hotlink for forums: [url=https://postimages.org/][img]https://i.postimg.cc/gksJQtf3/WFTools3-DDemo.jpg[/img][/url]
+         * Hotlink for website: <a href='https://postimages.org/' target='_blank'><img src='https://i.postimg.cc/gksJQtf3/WFTools3-DDemo.jpg' border='0' alt='WFTools3-DDemo'/></a>
+         * Removal link: https://postimg.cc/delete/WKWzVcJK/57927a39
+         *****/
     }
 }
