@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package >
   <metadata>
-    <id>$id$</id>
-    <version>$version$</version>
-    <title>$title$</title>
-    <authors>$author$</authors>
+    <id>WFTools3D</id>
+    <version>2.0.0</version>
+    <title>WFTools3D</title>
+    <authors>wolfoerster</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <!-- <icon>icon.png</icon> -->
     <projectUrl>https://github.com/wolfoerster/WFTools3D</projectUrl>
-    <description>$description$</description>
+    <description>3D tools for the Windows Presentation Foundation</description>
     <releaseNotes>Consolidated successor of version 1.2.</releaseNotes>
-    <copyright>$copyright$</copyright>
+    <copyright>Copyright © 2006 - 2022 Wolfgang Foerster (wolfoerster@gmx.de)</copyright>
     <tags>WPF 3D</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.7.2" />
+    </dependencies>
   </metadata>
 </package>
