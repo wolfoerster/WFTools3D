@@ -28,3 +28,4 @@ using System.Windows.Markup;
 //      Revision
 [assembly: AssemblyVersion("2.0.0.0")]
 [assembly: AssemblyFileVersion("2.0.0.0")]
+[assembly: Guid("D2B5FBA9-2A55-4429-98FF-F72F4D2845E6")]

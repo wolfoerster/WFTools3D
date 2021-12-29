@@ -96,57 +96,71 @@ namespace WFTools3D
         }
 
         /// <summary>
+        /// Calling ToStringExt() with invariant culture.
+        /// </summary>
+        public static string ToStringInv(this double value, string format = null)
+        {
+            return ToStringExt(value, CultureInfo.InvariantCulture, format);
+        }
+
+        /// <summary>
+        /// Calling ToStringExt() with current culture.
+        /// </summary>
+        public static string ToStringCur(this double value, string format = null)
+        {
+            return ToStringExt(value, CultureInfo.CurrentCulture, format);
+        }
+
+        /// <summary>
         /// Extended ToString() method. Converts the numeric value of this double to a string, using the specified format.<para/>
         /// There are two additional features on top of the basic double.ToString() implementation:<para/>
         /// 1. New format specifier 's' or 'S' to specify the number of significant figures.<para/>
         /// 2. Optimized scientific notation (remove dispensable characters, e.g. 1.2300e+004 will become 1.23e4)
         /// </summary>
         /// <param name="value">The double value.</param>
+        /// <param name="cultureInfo">An object that supplies culture-specific formatting information.</param>
         /// <param name="format">The format specifier. If this is null or empty, "g4" is used.</param>
-        public static string ToStringExt(this double value, string format = null)
+        public static string ToStringExt(this double value, CultureInfo cultureInfo, string format = null)
         {
-            NumberFormatInfo currentInfo = CultureInfo.CurrentCulture.NumberFormat;
+            var formatInfo = cultureInfo.NumberFormat;
 
-            //--- Do we have a special value?
+            //--- special value?
             if (double.IsNaN(value))
-                return currentInfo.NaNSymbol;
+                return formatInfo.NaNSymbol;
 
             if (double.IsPositiveInfinity(value))
-                return currentInfo.PositiveInfinitySymbol;
+                return formatInfo.PositiveInfinitySymbol;
 
             if (double.IsNegativeInfinity(value))
-                return currentInfo.NegativeInfinitySymbol;
+                return formatInfo.NegativeInfinitySymbol;
 
             if (string.IsNullOrWhiteSpace(format))
                 format = "g4";
 
+            //--- significant figures?
             if (format[0] == 's' || format[0] == 'S')
             {
-                // If you round '0.002' to 3 significant figures, the resulting string should be '0.00200'.
-                int sigFigures;
-                int.TryParse(format.Remove(0, 1), out sigFigures);
-
-                int roundingPosition = 0;
-                double roundedValue = RoundSignificantDigits(value, sigFigures, out roundingPosition);
+                int.TryParse(format.Remove(0, 1), out int sigFigures);
+                double roundedValue = RoundSignificantDigits(value, sigFigures, out int roundingPosition);
 
                 //--- 0 shall be formatted as 1 or any other integer < 10:
                 if (roundedValue == 0.0d)
                 {
                     sigFigures = Clamp(sigFigures, 1, 14);
-                    return string.Format(currentInfo, "{0:F" + (sigFigures - 1) + "}", value);
+                    return string.Format(formatInfo, "{0:F" + (sigFigures - 1) + "}", value);
                 }
 
                 // Check if the rounding position is positive and is not past 100 decimal places.
                 // If the rounding position is greater than 100, string.format won't represent the number correctly.
                 // ToDo:  What happens when the rounding position is greater than 100?
                 if (roundingPosition > 0 && roundingPosition < 100)
-                    return string.Format(currentInfo, "{0:F" + roundingPosition + "}", roundedValue);
+                    return string.Format(formatInfo, "{0:F" + roundingPosition + "}", roundedValue);
 
-                return roundedValue.ToString("F0", currentInfo);
+                return roundedValue.ToString("F0", formatInfo);
             }
 
             //--- Convert to string using format
-            string text = value.ToString(format, currentInfo);
+            string text = value.ToString(format, formatInfo);
 
             //--- If text is not in scientific notation, just return it as is:
             int e = text.IndexOfAny(new char[] { 'e', 'E' });
@@ -154,7 +168,7 @@ namespace WFTools3D
                 return text;
 
             //--- Remove trailing zeros and possibly decimal separator from the mantissa
-            char sep = currentInfo.NumberDecimalSeparator[0];
+            char sep = formatInfo.NumberDecimalSeparator[0];
             string mantissa = text.Substring(0, e);
 
             mantissa = mantissa.TrimEnd(new char[] { '0', sep });
@@ -162,8 +176,8 @@ namespace WFTools3D
                 return "0";
 
             //--- Remove leading zeros and possibly plus sign from the exponent
-            char negativeSign = currentInfo.NegativeSign[0];
-            char positiveSign = currentInfo.PositiveSign[0];
+            char negativeSign = formatInfo.NegativeSign[0];
+            char positiveSign = formatInfo.PositiveSign[0];
 
             string exponent = text.Substring(e + 1);
             bool isNegative = exponent[0] == negativeSign;
