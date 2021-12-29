@@ -6,7 +6,7 @@ which is essentially a wrapper around DirectX. Although the performance is not a
 high as it would be when using Direct3D directly, it's good enough for simple 
 scenarious, and it's definitely fun to play around with it.
 
-The WFTools3D library makes using WPF 3D even more simple and more fun. 
+WFTools3D makes using WPF 3D even more simple and more fun. 
 The heart of this library is a WPF FrameworkElement that brings the world of 3D 
 into your visual tree: class Scene3D.
 
@@ -22,5 +22,7 @@ Class Scene3D also has 3 built-in cameras which again can be rotated and transla
 very easily. A highlight for sure is the 'Speed' property of the cameras which makes 
 them fly in their look direction. Using the mouse you can now change yaw, pitch and 
 roll angles just like in a flight simulator.
+
+A NuGet package is available here: https://www.nuget.org/packages/WFTools3D/
 
 <img src="https://i.postimg.cc/gksJQtf3/WFTools3-DDemo.jpg" style="width:880px;">
