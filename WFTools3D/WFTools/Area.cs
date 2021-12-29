@@ -17,47 +17,41 @@
 
 namespace WFTools3D
 {
-    using System.Windows.Media.Media3D;
+    using System.Windows;
 
-    /// <summary>
-    /// A triangle in the xy plane with points P1=(0,0,0), P2=(1,0,0) and P3=(0,1,0).
-    /// </summary>
-    public class Triangle : Primitive3D
+    public struct Area
     {
-        public Triangle()
-            : base(1)
+        private Range rangeX;
+        private Range rangeY;
+
+        public Area(Range rangeX, Range rangeY)
         {
+            this.rangeX = rangeX;
+            this.rangeY = rangeY;
         }
 
-        public Triangle(int divisions)
-            : base(divisions)
+        public Area(double left, double top, double right, double bottom)
         {
+            rangeX = new Range(left, right);
+            rangeY = new Range(bottom, top);
         }
 
-        public Point3D P1
+        public Area(Point topLeft, Point bottomRight)
         {
-            get { return p1; }
-            set { p1 = value; InitMesh(); }
+            rangeX = new Range(topLeft.X, bottomRight.X);
+            rangeY = new Range(bottomRight.Y, topLeft.Y);
         }
-        private Point3D p1 = new Point3D(0, 0, 0);
 
-        public Point3D P2
+        public Range RangeX
         {
-            get { return p2; }
-            set { p2 = value; InitMesh(); }
+            get { return rangeX; }
+            set { rangeX = value; }
         }
-        private Point3D p2 = new Point3D(1, 0, 0);
 
-        public Point3D P3
+        public Range RangeY
         {
-            get { return p3; }
-            set { p3 = value; InitMesh(); }
-        }
-        private Point3D p3 = new Point3D(0, 1, 0);
-
-        protected override MeshGeometry3D CreateMesh()
-        {
-            return MeshUtils.CreateTriangle(p1, p2, p3, divisions);
+            get { return rangeY; }
+            set { rangeY = value; }
         }
     }
 }

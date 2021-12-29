@@ -17,47 +17,45 @@
 
 namespace WFTools3D
 {
-    using System.Windows.Media.Media3D;
-
-    /// <summary>
-    /// A triangle in the xy plane with points P1=(0,0,0), P2=(1,0,0) and P3=(0,1,0).
-    /// </summary>
-    public class Triangle : Primitive3D
+    public struct Range
     {
-        public Triangle()
-            : base(1)
+        private double from;
+        private double to;
+
+        public Range(double from, double to)
         {
+            this.from = from;
+            this.to = to;
         }
 
-        public Triangle(int divisions)
-            : base(divisions)
+        public double From
         {
+            get { return from; }
+            set { from = value; }
         }
 
-        public Point3D P1
+        public double To
         {
-            get { return p1; }
-            set { p1 = value; InitMesh(); }
+            get { return to; }
+            set { to = value; }
         }
-        private Point3D p1 = new Point3D(0, 0, 0);
 
-        public Point3D P2
+        public double Width
         {
-            get { return p2; }
-            set { p2 = value; InitMesh(); }
+            get { return to - from; }
+            set { to = from + value; }
         }
-        private Point3D p2 = new Point3D(1, 0, 0);
 
-        public Point3D P3
+        public double Center
         {
-            get { return p3; }
-            set { p3 = value; InitMesh(); }
+            get { return (from + to) * 0.5; }
+            set { Offset(value - Center); }
         }
-        private Point3D p3 = new Point3D(0, 1, 0);
 
-        protected override MeshGeometry3D CreateMesh()
+        public void Offset(double value)
         {
-            return MeshUtils.CreateTriangle(p1, p2, p3, divisions);
+            from += value;
+            to += value;
         }
     }
 }

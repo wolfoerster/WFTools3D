@@ -17,47 +17,34 @@
 
 namespace WFTools3D
 {
-    using System.Windows.Media.Media3D;
+    using System.Windows;
+    using System.Windows.Input;
+    using System.Windows.Media;
 
-    /// <summary>
-    /// A triangle in the xy plane with points P1=(0,0,0), P2=(1,0,0) and P3=(0,1,0).
-    /// </summary>
-    public class Triangle : Primitive3D
+    public static class WFUtils
     {
-        public Triangle()
-            : base(1)
+        public static bool IsShiftDown()
         {
+            return Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
         }
 
-        public Triangle(int divisions)
-            : base(divisions)
+        public static bool IsCtrlDown()
         {
+            return Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
         }
 
-        public Point3D P1
+        public static bool IsAltDown()
         {
-            get { return p1; }
-            set { p1 = value; InitMesh(); }
+            return Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) || Keyboard.IsKeyDown(Key.System);
         }
-        private Point3D p1 = new Point3D(0, 0, 0);
 
-        public Point3D P2
+        /// <summary>
+        /// Gets the resolution in DPI of the target device of a visual.
+        /// </summary>
+        static public Point GetResolution(Visual visual)
         {
-            get { return p2; }
-            set { p2 = value; InitMesh(); }
-        }
-        private Point3D p2 = new Point3D(1, 0, 0);
-
-        public Point3D P3
-        {
-            get { return p3; }
-            set { p3 = value; InitMesh(); }
-        }
-        private Point3D p3 = new Point3D(0, 1, 0);
-
-        protected override MeshGeometry3D CreateMesh()
-        {
-            return MeshUtils.CreateTriangle(p1, p2, p3, divisions);
+            var dps = VisualTreeHelper.GetDpi(visual);
+            return new Point(dps.PixelsPerInchX, dps.PixelsPerInchY);
         }
     }
 }

@@ -55,17 +55,28 @@
     <Compile Include="Primitives\Sphere.cs" />
     <Compile Include="Primitives\Square.cs" />
     <Compile Include="Primitives\Triangle.cs" />
-    <Compile Include="Basics\Utils.cs" />
     <Compile Include="Basics\MeshUtils.cs" />
     <Compile Include="Basics\Object3D.cs" />
     <Compile Include="Primitives\Primitive3D.cs" />
     <Compile Include="Primitives\Tube.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Basics\Scene3D.cs" />
+    <Compile Include="WFTools\Area.cs" />
+    <Compile Include="WFTools\LinearTransform.cs" />
+    <Compile Include="WFTools\MathUtils.cs" />
+    <Compile Include="WFTools\NumberBox.cs" />
+    <Compile Include="WFTools\PerformanceChecker.cs" />
+    <Compile Include="WFTools\Range.cs" />
+    <Compile Include="WFTools\Screen.cs" />
+    <Compile Include="WFTools\StackPanelH.cs" />
+    <Compile Include="WFTools\TextureTransform.cs" />
+    <Compile Include="WFTools\WFExtensions.cs" />
+    <Compile Include="WFTools\WFUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="WFTools3D.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

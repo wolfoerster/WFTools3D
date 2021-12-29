@@ -17,47 +17,35 @@
 
 namespace WFTools3D
 {
-    using System.Windows.Media.Media3D;
+    using System.Windows;
+    using System.Windows.Controls;
 
-    /// <summary>
-    /// A triangle in the xy plane with points P1=(0,0,0), P2=(1,0,0) and P3=(0,1,0).
-    /// </summary>
-    public class Triangle : Primitive3D
+    public class StackPanelH : StackPanel
     {
-        public Triangle()
-            : base(1)
+        public StackPanelH()
         {
+            Orientation = Orientation.Horizontal;
         }
 
-        public Triangle(int divisions)
-            : base(divisions)
+        protected override Size ArrangeOverride(Size arrangeSize)
         {
-        }
+            double x = 0;
 
-        public Point3D P1
-        {
-            get { return p1; }
-            set { p1 = value; InitMesh(); }
-        }
-        private Point3D p1 = new Point3D(0, 0, 0);
+            foreach (UIElement child in base.InternalChildren)
+            {
+                if (child != null)
+                {
+                    double width = child.DesiredSize.Width;
+                    double height = child.DesiredSize.Height;
+                    double y = (arrangeSize.Height - height) * 0.5;
 
-        public Point3D P2
-        {
-            get { return p2; }
-            set { p2 = value; InitMesh(); }
-        }
-        private Point3D p2 = new Point3D(1, 0, 0);
+                    Rect rect = new Rect(x, y, width, height);
+                    child.Arrange(rect);
+                    x += width;
+                }
+            }
 
-        public Point3D P3
-        {
-            get { return p3; }
-            set { p3 = value; InitMesh(); }
-        }
-        private Point3D p3 = new Point3D(0, 1, 0);
-
-        protected override MeshGeometry3D CreateMesh()
-        {
-            return MeshUtils.CreateTriangle(p1, p2, p3, divisions);
+            return arrangeSize;
         }
     }
 }

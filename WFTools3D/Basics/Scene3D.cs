@@ -1,7 +1,7 @@
 ﻿//******************************************************************************************
-// Copyright © 2016 Wolfgang Foerster (wolfoerster@gmx.de)
+// Copyright © 2016 - 2022 Wolfgang Foerster (wolfoerster@gmx.de)
 //
-// This file is part of the WFTools3D project which can be found on github.com
+// This file is part of the WFTools3D project which can be found on github.com.
 //
 // WFTools3D is free software: you can redistribute it and/or modify it under the terms 
 // of the GNU General Public License as published by the Free Software Foundation, 
@@ -14,28 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //******************************************************************************************
-using System;
-using System.Linq;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
-using System.Collections.Generic;
-using System.Windows.Threading;
-using System.Windows.Controls;
-using System.ComponentModel;
-using System.Windows.Input;
-
-#if WFToolsAvailable
-using WFTools;
-#endif
 
 namespace WFTools3D
 {
+    using System;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Media;
+    using System.Windows.Media.Media3D;
+    using System.Collections.Generic;
+    using System.Windows.Threading;
+    using System.Windows.Controls;
+    using System.ComponentModel;
+    using System.Windows.Input;
+
     /// <summary>
     /// A Border with a Viewport3D, a Models container, Lighting, three Cameras and lots of nice features.
     /// </summary>
     public class Scene3D : Border, INotifyPropertyChanged
     {
+        private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Render);
+
         public Scene3D()
         {
             IsCached = true;
@@ -57,11 +56,9 @@ namespace WFTools3D
             ActivateCamera(0);
 
             //--- timer is required for flight simulation
-            timer = new DispatcherTimer(DispatcherPriority.Render);
             timer.Interval = TimeSpan.FromMilliseconds(30);
             timer.Tick += TimerTick;
         }
-        DispatcherTimer timer;
 
         #region Properties
 

@@ -17,47 +17,40 @@
 
 namespace WFTools3D
 {
-    using System.Windows.Media.Media3D;
+    using System;
+    using System.Windows;
+    using System.Windows.Media;
+    using System.Windows.Threading;
 
-    /// <summary>
-    /// A triangle in the xy plane with points P1=(0,0,0), P2=(1,0,0) and P3=(0,1,0).
-    /// </summary>
-    public class Triangle : Primitive3D
+    public static class WFExtensions
     {
-        public Triangle()
-            : base(1)
+        public static bool IsEqualTo(this double value1, double value2, double epsilon = 1e-12)
         {
+            return Math.Abs(value1 - value2) <= epsilon;
         }
 
-        public Triangle(int divisions)
-            : base(divisions)
+        public static void Dispatch(this Visual visual, Action action, DispatcherPriority priority = DispatcherPriority.Render)
         {
+            visual.Dispatcher.Invoke(action, priority);
+            //visual.Dispatcher.BeginInvoke(priority, action);
         }
 
-        public Point3D P1
+        public static Point ToDip(this Point pointInPixel, Visual visual)
         {
-            get { return p1; }
-            set { p1 = value; InitMesh(); }
+            var dpi = VisualTreeHelper.GetDpi(visual);
+            var pt = pointInPixel;
+            pt.X /= dpi.DpiScaleX;
+            pt.Y /= dpi.DpiScaleY;
+            return pt;
         }
-        private Point3D p1 = new Point3D(0, 0, 0);
 
-        public Point3D P2
+        public static Point ToPixel(this Point pointInDip, Visual visual)
         {
-            get { return p2; }
-            set { p2 = value; InitMesh(); }
-        }
-        private Point3D p2 = new Point3D(1, 0, 0);
-
-        public Point3D P3
-        {
-            get { return p3; }
-            set { p3 = value; InitMesh(); }
-        }
-        private Point3D p3 = new Point3D(0, 1, 0);
-
-        protected override MeshGeometry3D CreateMesh()
-        {
-            return MeshUtils.CreateTriangle(p1, p2, p3, divisions);
+            var dpi = VisualTreeHelper.GetDpi(visual);
+            var pt = pointInDip;
+            pt.X *= dpi.DpiScaleX;
+            pt.Y *= dpi.DpiScaleY;
+            return pt;
         }
     }
 }

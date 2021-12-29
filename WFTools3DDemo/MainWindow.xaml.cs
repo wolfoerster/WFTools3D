@@ -1,7 +1,7 @@
 ﻿//******************************************************************************************
 // Copyright © 2021 Wolfgang Foerster (wolfoerster@gmx.de)
 //
-// This file is part of the WFTools3D project which can be found on github.com
+// This file is part of the WFTools3D project which can be found on github.com.
 //
 // WFTools3D is free software: you can redistribute it and/or modify it under the terms 
 // of the GNU General Public License as published by the Free Software Foundation, 
