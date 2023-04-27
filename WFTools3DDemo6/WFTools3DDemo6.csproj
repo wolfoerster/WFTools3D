@@ -7,4 +7,22 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Images\Facade.jpg" />
+    <None Remove="Images\Ground.jpg" />
+    <None Remove="Images\Poster.jpg" />
+    <None Remove="Images\Sky.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Images\Facade.jpg" />
+    <EmbeddedResource Include="Images\Ground.jpg" />
+    <EmbeddedResource Include="Images\Poster.jpg" />
+    <EmbeddedResource Include="Images\Sky.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WFTools3D\WFTools3D6.csproj" />
+  </ItemGroup>
+
 </Project>

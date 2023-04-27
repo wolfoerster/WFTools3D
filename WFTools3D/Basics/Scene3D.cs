@@ -508,7 +508,9 @@ namespace WFTools3D
         /// </summary>
         void TimerTick(object sender, EventArgs e)
         {
+#pragma warning disable CA1416 // Validate platform compatibility
             Camera.MovingDirectionIsLocked = WFUtils.IsCtrlDown() || Console.CapsLock;
+#pragma warning restore CA1416 // Validate platform compatibility
 
             foreach (var camera in Cameras)
                 camera.Update();

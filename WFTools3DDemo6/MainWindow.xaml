@@ -3,8 +3,36 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:WFTools3DDemo6"
         xmlns:wft3d="WFTools3D"
-        Title="WFTools3D Demo .NET6" Height="950" Width="900">
-  <Grid Margin="4">
-    <!--<wft3d:Scene3D x:Name="scene"/>-->
+        Title="WFTools3D Demo .NET6" Height="950" Width="1400">
+  <Window.Resources>
+    <ImageBrush x:Key="Facade" ImageSource="Images\Facade.jpg"/>
+    <ImageBrush x:Key="Ground" ImageSource="Images\Ground.jpg"/>
+    <ImageBrush x:Key="Poster" ImageSource="Images\Poster.jpg"/>
+    <ImageBrush x:Key="Sky" ImageSource="Images\Sky.jpg"/>
+  </Window.Resources>
+  <Grid>
+    <wft3d:Scene3D x:Name="scene"/>
+    <Grid x:Name="info" Background="LightGray" Opacity="0.5" HorizontalAlignment="Right" VerticalAlignment="Top">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.Triggers>
+        <EventTrigger RoutedEvent="MouseEnter">
+          <BeginStoryboard>
+            <Storyboard>
+              <DoubleAnimation Duration="0:0:1" To="1" Storyboard.TargetProperty="Opacity"/>
+            </Storyboard>
+          </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="MouseLeave">
+          <BeginStoryboard>
+            <Storyboard>
+              <DoubleAnimation Duration="0:0:5" To="0.1" Storyboard.TargetProperty="Opacity"/>
+            </Storyboard>
+          </BeginStoryboard>
+        </EventTrigger>
+      </Grid.Triggers>
+    </Grid>
   </Grid>
 </Window>
