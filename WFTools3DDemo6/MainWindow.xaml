@@ -1,0 +1,10 @@
+﻿<Window x:Class="WFTools3DDemo6.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:WFTools3DDemo6"
+        xmlns:wft3d="WFTools3D"
+        Title="WFTools3D Demo .NET6" Height="950" Width="900">
+  <Grid Margin="4">
+    <!--<wft3d:Scene3D x:Name="scene"/>-->
+  </Grid>
+</Window>
