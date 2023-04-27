@@ -10,7 +10,7 @@ using System.Windows.Markup;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Wolfgang Foerster")]
 [assembly: AssemblyProduct("WFTools3D")]
-[assembly: AssemblyCopyright("Copyright © 2006 - 2022 Wolfgang Foerster (wolfoerster@gmx.de)")]
+[assembly: AssemblyCopyright("Copyright © 2006 - 2023 Wolfgang Foerster (wolfoerster@gmx.de)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: XmlnsDefinition("WFTools3D", "WFTools3D")]
@@ -26,6 +26,6 @@ using System.Windows.Markup;
 //      Minor Version 
 //      Build Number
 //      Revision
-[assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.0.0.0")]
+[assembly: AssemblyVersion("2.0.1.0")]
+[assembly: AssemblyFileVersion("2.0.1.0")]
 [assembly: Guid("D2B5FBA9-2A55-4429-98FF-F72F4D2845E6")]

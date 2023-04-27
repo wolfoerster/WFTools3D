@@ -87,12 +87,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WFTools3D\WFTools3D.csproj">
-      <Project>{4f58d960-50f3-434f-b2b0-c9ed67151485}</Project>
-      <Name>WFTools3D</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Facade.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +97,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Sky.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WFTools3D\WFTools3D6.csproj">
+      <Project>{18fee42e-9552-49d5-a491-041428b8553a}</Project>
+      <Name>WFTools3D6</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
