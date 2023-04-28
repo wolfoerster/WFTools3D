@@ -1,5 +1,5 @@
 ﻿//******************************************************************************************
-// Copyright © 2016 - 2022 Wolfgang Foerster (wolfoerster@gmx.de)
+// Copyright © 2016 - 2023 Wolfgang Foerster (wolfoerster@gmx.de)
 //
 // This file is part of the WFTools3D project which can be found on github.com.
 //
@@ -508,7 +508,9 @@ namespace WFTools3D
         /// </summary>
         void TimerTick(object sender, EventArgs e)
         {
+#pragma warning disable CA1416 // Validate platform compatibility
             Camera.MovingDirectionIsLocked = WFUtils.IsCtrlDown() || Console.CapsLock;
+#pragma warning restore CA1416 // Validate platform compatibility
 
             foreach (var camera in Cameras)
                 camera.Update();
