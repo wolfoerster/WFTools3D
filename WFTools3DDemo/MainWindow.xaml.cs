@@ -1,5 +1,5 @@
 ﻿//******************************************************************************************
-// Copyright © 2021 Wolfgang Foerster (wolfoerster@gmx.de)
+// Copyright © 2017 - 2024 Wolfgang Foerster (wolfoerster@gmx.de)
 //
 // This file is part of the WFTools3D project which can be found on github.com.
 //
@@ -195,8 +195,11 @@ namespace WFTools3DDemo
             {
                 t0 = t1;
                 Title = string.Format("WFTools3D Demo ({0})", msg);
+                if (flightPathMode)
+                    camPositions.Add(scene.Camera.Position);
             }
         }
+
         DateTime t0;
         PerformanceChecker checker = new PerformanceChecker();
 
@@ -282,8 +285,31 @@ namespace WFTools3DDemo
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
+
             if (e.Key == Key.Escape)
                 Close();
+
+            else if (e.Key == Key.Enter)
+                ToggleFlightPathMode();
         }
+
+        private void ToggleFlightPathMode()
+        {
+            if (flightPathMode)
+            {
+                flightPathMode = false;
+                var flightPath = new FlightPath();
+                flightPath.Init(camPositions);
+                scene.Models.Add(flightPath);
+            }
+            else
+            {
+                flightPathMode = true;
+                camPositions = new List<Point3D>();
+            }
+        }
+
+        bool flightPathMode;
+        List<Point3D> camPositions;
     }
 }
