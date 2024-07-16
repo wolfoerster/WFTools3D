@@ -33,42 +33,43 @@ namespace WFTools3DDemo
 
         public FlightPath()
         {
-            DiffuseMaterial.Brush = new LinearGradientBrush(Colors.Green, Colors.Blue, 90);
+            var brush = new LinearGradientBrush();
+            brush.GradientStops.Add(new GradientStop(Colors.Green, 0.0));
+            brush.GradientStops.Add(new GradientStop(Colors.Yellow, 0.5));
+            brush.GradientStops.Add(new GradientStop(Colors.Red, 1.0));
+            brush.EndPoint = new Point(0, 1);
+
+            DiffuseMaterial.Brush = brush;
             BackMaterial = Material;
         }
 
-        public void Init(IEnumerable<Point3D> points)
+        public void Init(List<Point3D> points)
         {
-            this.points = points.ToList();
-            CalcTexture();
-            InitMesh();
+            if (points.Count > 1)
+            {
+                this.points = points;
+                CalcTexture();
+                InitMesh();
+            }
         }
 
         private void CalcTexture()
         {
-            if (points == null || points.Count < 2)
-                return;
+            maxZ = points[0].Z;
+            var length = new List<double> { 0 };
 
-            maxZ = double.NegativeInfinity;
-            textureX = new List<double>();
-
-            for (int i = 0; i < points.Count; i++)
+            for (int i = 1; i < points.Count; i++)
             {
                 maxZ = Math.Max(maxZ, points[i].Z);
-                if (i == 0)
-                {
-                    textureX.Add(0);
-                }
-                else
-                {
-                    var v = points[i] - points[i - 1];
-                    v.Z = 0;
-                    textureX.Add(textureX[i - 1] + v.Length);
-                }
+
+                var v = points[i] - points[i - 1];
+                v.Z = 0; // project to xy-plane
+
+                length.Add(length[i - 1] + v.Length);
             }
 
-            for (int i = 0; i < textureX.Count; i++)
-                textureX[i] /= textureX[textureX.Count - 1];
+            var totalLength = length[length.Count - 1];
+            textureX = length.Select(x => x / totalLength).ToList();
         }
 
         protected override MeshGeometry3D CreateMesh()
@@ -90,34 +91,24 @@ namespace WFTools3DDemo
                 var n = u.Cross(v);
                 n.Normalize();
 
-                mesh.Positions.Add(p0);
-                mesh.Normals.Add(n);
-                mesh.TextureCoordinates.Add(GetTexCoordinate(p0, i - 1));
+                Add(mesh, p0, n, i - 1);
+                Add(mesh, p1, n, i);
+                Add(mesh, p2, n, i);
+                Add(mesh, p3, n, i - 1);
 
-                mesh.Positions.Add(p1);
-                mesh.Normals.Add(n);
-                mesh.TextureCoordinates.Add(GetTexCoordinate(p1, i));
-
-                mesh.Positions.Add(p2);
-                mesh.Normals.Add(n);
-                mesh.TextureCoordinates.Add(GetTexCoordinate(p2, i));
-
-                var j = mesh.Positions.Count - 3;
+                var j = mesh.Positions.Count - 4;
                 MeshUtils.AddTriangleIndices(mesh, j, j + 1, j + 2);
-
-                mesh.Positions.Add(p3);
-                mesh.Normals.Add(n);
-                mesh.TextureCoordinates.Add(GetTexCoordinate(p3, i - 1));
- 
                 MeshUtils.AddTriangleIndices(mesh, j + 2, j + 3, j);
             }
 
             return mesh;
         }
 
-        private Point GetTexCoordinate(Point3D pt, int index)
+        private void Add(MeshGeometry3D mesh, Point3D point, Vector3D normal, int pointIndex)
         {
-            return new Point(textureX[index], pt.Z / maxZ);
+            mesh.Positions.Add(point);
+            mesh.Normals.Add(normal);
+            mesh.TextureCoordinates.Add(new Point(textureX[pointIndex], point.Z / maxZ));
         }
 
         private static Point3D ProjectXY(Point3D pt) => new Point3D(pt.X, pt.Y, 0);
