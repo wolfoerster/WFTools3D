@@ -17,25 +17,58 @@
 
 namespace WFTools3DDemo
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows;
+    using System.Windows.Media;
     using System.Windows.Media.Media3D;
     using WFTools3D;
 
     public class FlightPath : Primitive3D
     {
         private List<Point3D> points;
+        private List<double> textureX;
+        private double maxZ;
 
         public FlightPath()
         {
+            DiffuseMaterial.Brush = new LinearGradientBrush(Colors.Green, Colors.Blue, 90);
             BackMaterial = Material;
         }
 
         public void Init(IEnumerable<Point3D> points)
         {
             this.points = points.ToList();
+            CalcTexture();
             InitMesh();
+        }
+
+        private void CalcTexture()
+        {
+            if (points == null || points.Count < 2)
+                return;
+
+            maxZ = double.NegativeInfinity;
+            textureX = new List<double>();
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                maxZ = Math.Max(maxZ, points[i].Z);
+                if (i == 0)
+                {
+                    textureX.Add(0);
+                }
+                else
+                {
+                    var v = points[i] - points[i - 1];
+                    v.Z = 0;
+                    textureX.Add(textureX[i - 1] + v.Length);
+                }
+            }
+
+            for (int i = 0; i < textureX.Count; i++)
+                textureX[i] /= textureX[textureX.Count - 1];
         }
 
         protected override MeshGeometry3D CreateMesh()
@@ -59,22 +92,22 @@ namespace WFTools3DDemo
 
                 mesh.Positions.Add(p0);
                 mesh.Normals.Add(n);
-                mesh.TextureCoordinates.Add(GetTexCoordinate(p0));
+                mesh.TextureCoordinates.Add(GetTexCoordinate(p0, i - 1));
 
                 mesh.Positions.Add(p1);
                 mesh.Normals.Add(n);
-                mesh.TextureCoordinates.Add(GetTexCoordinate(p1));
+                mesh.TextureCoordinates.Add(GetTexCoordinate(p1, i));
 
                 mesh.Positions.Add(p2);
                 mesh.Normals.Add(n);
-                mesh.TextureCoordinates.Add(GetTexCoordinate(p2));
+                mesh.TextureCoordinates.Add(GetTexCoordinate(p2, i));
 
                 var j = mesh.Positions.Count - 3;
                 MeshUtils.AddTriangleIndices(mesh, j, j + 1, j + 2);
 
                 mesh.Positions.Add(p3);
                 mesh.Normals.Add(n);
-                mesh.TextureCoordinates.Add(GetTexCoordinate(p3));
+                mesh.TextureCoordinates.Add(GetTexCoordinate(p3, i - 1));
  
                 MeshUtils.AddTriangleIndices(mesh, j + 2, j + 3, j);
             }
@@ -82,10 +115,9 @@ namespace WFTools3DDemo
             return mesh;
         }
 
-        private static Point GetTexCoordinate(Point3D pt)
+        private Point GetTexCoordinate(Point3D pt, int index)
         {
-            // to be done
-            return new Point();
+            return new Point(textureX[index], pt.Z / maxZ);
         }
 
         private static Point3D ProjectXY(Point3D pt) => new Point3D(pt.X, pt.Y, 0);
