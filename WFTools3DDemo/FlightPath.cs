@@ -56,7 +56,7 @@ namespace WFTools3DDemo
         private void CalcTexture()
         {
             maxZ = points[0].Z;
-            var length = new List<double> { 0 };
+            var lengths = new double[points.Count];
 
             for (int i = 1; i < points.Count; i++)
             {
@@ -65,11 +65,11 @@ namespace WFTools3DDemo
                 var v = points[i] - points[i - 1];
                 v.Z = 0; // project to xy-plane
 
-                length.Add(length[i - 1] + v.Length);
+                lengths[i] = lengths[i - 1] + v.Length;
             }
 
-            var totalLength = length[length.Count - 1];
-            textureX = length.Select(x => x / totalLength).ToList();
+            var totalLength = lengths[lengths.Length - 1];
+            textureX = lengths.Select(x => x / totalLength).ToList();
         }
 
         protected override MeshGeometry3D CreateMesh()
@@ -86,9 +86,7 @@ namespace WFTools3DDemo
                 var p2 = ProjectXY(p1);
                 var p3 = ProjectXY(p0);
 
-                var u = p0 - p3;
-                var v = p2 - p3;
-                var n = u.Cross(v);
+                var n = Math3D.UnitZ.Cross(p2 - p3);
                 n.Normalize();
 
                 Add(mesh, p0, n, i - 1);
@@ -111,6 +109,6 @@ namespace WFTools3DDemo
             mesh.TextureCoordinates.Add(new Point(textureX[pointIndex], point.Z / maxZ));
         }
 
-        private static Point3D ProjectXY(Point3D pt) => new Point3D(pt.X, pt.Y, 0);
+        private static Point3D ProjectXY(Point3D point) => new Point3D(point.X, point.Y, 0);
     }
 }
