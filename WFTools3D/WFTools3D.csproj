@@ -8,14 +8,14 @@
     <UseWPF>true</UseWPF>
 
     <PackageId>WFTools3D</PackageId>
-    <PackageVersion>2.0.1</PackageVersion>
+    <PackageVersion>2.0.2</PackageVersion>
     <Title>WFTools3D</Title>
     <Authors>Wolfgang Foerster</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/wolfoerster/WFTools3D</PackageProjectUrl>
     <Description>3D tools for the Windows Presentation Foundation</Description>
-    <PackageReleaseNotes>Consolidated successor of version 2.0.0</PackageReleaseNotes>
-    <Copyright>Copyright © 2006 - 2023 Wolfgang Foerster (wolfoerster@gmx.de)</Copyright>
+    <PackageReleaseNotes>Consolidated successor of version 2.0.1</PackageReleaseNotes>
+    <Copyright>Copyright © 2006 - 2024 Wolfgang Foerster (wolfoerster@gmx.de)</Copyright>
     <PackageTags>WPF;3D</PackageTags>
   </PropertyGroup>
 
