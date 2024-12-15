@@ -17,8 +17,8 @@
     <PackageReleaseNotes>Consolidated successor of version 2.0.1</PackageReleaseNotes>
     <Copyright>Copyright © 2006 - 2024 Wolfgang Foerster (wolfoerster@gmx.de)</Copyright>
     <PackageTags>WPF;3D</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
-
   <ItemGroup>
     <None Remove="WFTools3D.jpg" />
   </ItemGroup>
