@@ -1,5 +1,5 @@
 ﻿//******************************************************************************************
-// Copyright © 2016 - 2022 Wolfgang Foerster (wolfoerster@gmx.de)
+// Copyright © 2016 - 2024 Wolfgang Foerster (wolfoerster@gmx.de)
 //
 // This file is part of the WFTools3D project which can be found on github.com.
 //
@@ -17,6 +17,8 @@
 
 namespace WFTools3D
 {
+    using System;
+
     /// <summary>
     /// A linear transformation from a range of doubles to another range of doubles.
     /// </summary>
@@ -30,6 +32,8 @@ namespace WFTools3D
             Init(0, 1, 0, 1);
         }
 
+        public double Eps { get; set; } = 1e-12;
+
         public LinearTransform(double from1, double from2, double to1, double to2)
         {
             Init(from1, from2, to1, to2);
@@ -37,18 +41,18 @@ namespace WFTools3D
 
         public bool Init(double from1, double from2, double to1, double to2)
         {
-            if (from1.IsEqualTo(from2) || to1.IsEqualTo(to2))
+            var dy = from2 - from1;
+
+            if (Math.Abs(dy) < Eps)
             {
-                slope = 1;
-                offset = 0;
+                slope = double.NaN;
+                offset = double.NaN;
                 return false;
             }
-            else
-            {
-                slope = (to2 - to1) / (from2 - from1);
-                offset = to1 - slope * from1;
-                return true;
-            }
+
+            slope = (to2 - to1) / (from2 - from1);
+            offset = to1 - slope * from1;
+            return true;
         }
 
         public double Slope
@@ -70,6 +74,9 @@ namespace WFTools3D
 
         public double BackTransform(double value)
         {
+            if (Math.Abs(slope) < Eps)
+                return double.NaN;
+
             return (value - offset) / slope;
         }
     }
