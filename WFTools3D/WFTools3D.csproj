@@ -2,19 +2,20 @@
 
   <PropertyGroup>    
     <TargetFrameworks>net8.0-windows;net48</TargetFrameworks>
+    <LangVersion>latestMajor</LangVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <UseWPF>true</UseWPF>
 
     <PackageId>WFTools3D</PackageId>
-    <PackageVersion>2.0.2</PackageVersion>
+    <PackageVersion>2.0.3</PackageVersion>
     <Title>WFTools3D</Title>
     <Authors>Wolfgang Foerster</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/wolfoerster/WFTools3D</PackageProjectUrl>
     <Description>3D tools for the Windows Presentation Foundation</Description>
-    <PackageReleaseNotes>Consolidated successor of version 2.0.1</PackageReleaseNotes>
+    <PackageReleaseNotes>Consolidated successor of version 2.0.2</PackageReleaseNotes>
     <Copyright>Copyright © 2006 - 2024 Wolfgang Foerster (wolfoerster@gmx.de)</Copyright>
     <PackageTags>WPF;3D</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>

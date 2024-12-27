@@ -149,6 +149,44 @@ namespace WFTools3D
         }
 
         /// <summary>
+        /// Calculates the normalized vector but does not normalize the vector itself.
+        /// </summary>
+        public static Vector3D Normalized(this Vector3D v)
+        {
+            var n = new Vector3D(v.X, v.Y, v.Z);
+            n.Normalize();
+            return n;
+        }
+
+        /// <summary>
+        /// Calculates an orthogonal vector to the given vector.
+        /// </summary>
+        public static Vector3D AnyOrthogonal(this Vector3D direction)
+        {
+            var unitD = direction.Normalized();
+            var n = unitD.Cross(Math3D.UnitX);
+            return n.LengthSquared > 1e-3 ? n : unitD.Cross(Math3D.UnitY);
+        }
+
+        /// <summary>
+        /// Checks if two vectors are orthogonal to each other.
+        /// </summary>
+        public static bool IsOrthogonalTo(this Vector3D v1, Vector3D v2, double eps = 1e-9)
+        {
+            var dot = v1.Normalized().Dot(v2.Normalized());
+            return Math.Abs(dot) < eps;
+        }
+
+        /// <summary>
+        /// Checks if two vectors are parallel to each other.
+        /// </summary>
+        public static bool IsParallelTo(this Vector3D v1, Vector3D v2, double eps = 1e-9)
+        {
+            var dot = v1.Normalized().Dot(v2.Normalized());
+            return Math.Abs(dot) > 1 - eps;
+        }
+
+        /// <summary>
         /// Gets the aspect ratio.
         /// </summary>
         public static double GetAspectRatio(Size size)

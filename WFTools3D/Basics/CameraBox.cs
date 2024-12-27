@@ -241,7 +241,8 @@ namespace WFTools3D
             }
             else
             {
-                if (targetUp.Length < 1e-12)
+                // if the current up vector is not orthogonal to the look direction, take the new one
+                if (!targetUp.IsOrthogonalTo(targetLook))
                 {
                     targetUp = tempUp;
                 }
@@ -258,7 +259,8 @@ namespace WFTools3D
             }
         }
         bool turnToTarget;
-        Vector3D targetUp, targetLook;
+        Vector3D targetUp = Math3D.UnitZ;
+        Vector3D targetLook = Math3D.UnitX;
 
         /// <summary>
         /// Modifies the pitch and roll angle so that the look direction is parallel to the xy plane.
