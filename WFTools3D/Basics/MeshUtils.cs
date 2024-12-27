@@ -479,32 +479,58 @@ namespace WFTools3D
             if (pathCount < 2 || sectionCount < 2)
                 return null;
 
+            #region GetLookDir
+
+            Vector3D GetLookDir(int index)
+            {
+                Vector3D Calc(int iprev, int inext)
+                {
+                    var vnext = path[inext] - path[index];
+                    var vprev = path[iprev] - path[index];
+                    vnext.Normalize();
+                    vprev.Normalize();
+                    return vnext - vprev;
+                }
+
+                if (isPathClosed)
+                {
+                    if (index == 0)
+                        return Calc(pathCount - 1, index + 1);
+
+                    if (index == pathCount - 1)
+                        return Calc(index - 1, 0);
+                }
+                else
+                {
+                    if (index == 0)
+                        return path[1] - path[0];
+
+                    if (index == pathCount - 1)
+                        return path[path.Count - 1] - path[path.Count - 2];
+                }
+
+                return Calc(index - 1, index + 1);
+            }
+
+            #endregion GetLookDir
+
             MeshGeometry3D mesh = new MeshGeometry3D();
 
             //--- find first segment direction (look direction)
-            int next, prev = isPathClosed ? pathCount - 1 : 0;
-            Vector3D look = path[1] - path[prev];
+            Vector3D look = GetLookDir(0);
             look.Normalize();
 
             //--- find vector v which is perpendicular to the first segment direction
-            Vector3D u = Math3D.UnitX;
-            Vector3D v = look.Cross(u);
-            if (v.LengthSquared < 1e-3)
-            {
-                u = Math3D.UnitY;
-                v = look.Cross(u);
-            }
+            Vector3D v = look.AnyOrthogonal();
 
             //--- calculate positions, normals and texture coordinates
             for (int i = 0; i < pathCount; i++)
             {
                 //--- calculate new look direction from previous and next point in path
-                prev = i > 0 ? i - 1 : isPathClosed ? pathCount - 1 : i;
-                next = i + 1 < pathCount ? i + 1 : isPathClosed ? 0 : i;
-                look = path[next] - path[prev];
+                look = GetLookDir(i);
 
                 //--- find vector u which is perpendicular to v and new look (note that v already is perpendicular to old look)
-                u = v.Cross(look);
+                var u = v.Cross(look);
                 u.Normalize();
 
                 //--- recalc v

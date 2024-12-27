@@ -164,8 +164,8 @@ namespace WFTools3D
         public static Vector3D AnyOrthogonal(this Vector3D direction)
         {
             var unitD = direction.Normalized();
-            var n = unitD.Cross(Math3D.UnitX);
-            return n.LengthSquared > 1e-3 ? n : unitD.Cross(Math3D.UnitY);
+            var n = unitD.Cross(UnitX);
+            return n.LengthSquared > 1e-3 ? n : unitD.Cross(UnitY);
         }
 
         /// <summary>
