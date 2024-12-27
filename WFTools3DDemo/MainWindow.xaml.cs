@@ -85,7 +85,7 @@ namespace WFTools3DDemo
             }
 
             Tube tube = new Tube(12) { Radius = 0.1, IsPathClosed = true };
-            int n = 18;
+            int n = 180;
             List<Point3D> path = new List<Point3D>(n);
             for (int i = 0; i < n; i++)
             {
