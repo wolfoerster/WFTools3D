@@ -20,8 +20,10 @@
     <PackageTags>WPF;3D</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+  
   <ItemGroup>
     <None Remove="WFTools3D.jpg" />
+    <None Include="README.md" Pack="true" PackagePath=""/>
   </ItemGroup>
 
   <ItemGroup>
